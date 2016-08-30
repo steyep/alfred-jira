@@ -1,0 +1,20 @@
+{
+  "name": "alfred-jira",
+  "version": "1.0.0",
+  "description": "An Alfred workflow to interact with Jira",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.13.1",
+    "node-persist": "^1.0.0",
+    "xmlbuilder": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "steyep/alfred-jira"
+  }
+}

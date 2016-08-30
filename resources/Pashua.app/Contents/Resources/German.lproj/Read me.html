@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Pashua 0.10.3</title>
+<meta name="author" content="Carsten Blüm" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<script>
+var doc, mandatory;
+if (document.location.href.indexOf('/Volumes/Pashua') == -1) {
+    // Not launched from disk image
+    doc       = 'Dokumentation';
+    mandatory = '';
+} else {
+    doc       = '<a href="file:///Volumes/Pashua/Documentation.html" target="_blank">Dokumentation</a>';
+    mandatory = '(vgl. <a href="file:///Volumes/Pashua/Documentation.html#topic.mandatory" target="_blank">Dokumentation</a>)';
+}
+</script>
+
+<div id="frame">
+
+<header>
+    <a href="http://www.bluem.net/de/mac/" target="_blank"><span>Carsten Blüm Mac Development</span></a>
+</header>
+
+<h1>Pashua 0.10.3</h1>
+
+<h2>Was ist Pashua?</h2>
+<p>Pashua ist ein Programm zur Erzeugung von »echten« Dialogfenstern aus zahlreichen Programmiersprachen heraus, z.B. AppleScript, Bash, Perl, PHP, Python, Ruby oder Tcl. Hierfür stehen eine Reihe von GUI-Elementen zur Verfügung: Texteingabefelder, Check&shy;boxes, Aufklapp&shy;menüs, Combo Boxes, Buttons und so weiter; außerdem können auch Bilder und PDFs eingebettet werden.<br />
+Die vom Benutzer einge&shy;ge&shy;benen Daten werden von Pashua an das aufrufende Skript zurückgeben, welches dann mit diesen arbeiten kann.<br />
+Pashua bedient sich dabei einer äußerst einfachen Syntax für die Beschrei&shy;bung des Dialoges; alle Fleiß&shy;arbeiten wie das Posi&shy;tio&shy;nieren der Elemente, die Berechnung der Fenstergröße etc. werden vollautomatisch übernommen.</p>
+
+<h2>Was kostet Pashua?</h2>
+<p>Pashua ist kostenlos. Aber wenn das Programm für Sie nützlich ist und Sie ein »Danke« senden möchten, gibt es dafür <a href="http://www.bluem.net/jump/donations/">eine Reihe von Möglichkeiten</a>.</p>
+
+<h2>Wie benutzt man Pashua?</h2>
+<p>Der im Lieferumfang von Pashua enthaltene Ordner »Examples« zeigt die Nutzung von Pashua mittels AppleScript, Bash, Perl und PHP. Für genauere Informationen beachten Sie bitte die Kommentare in den jeweiligen Dateien. Pashua kann auch mit weiteren Sprachen genutzt werden, aber Beispiele für einige Sprachen, die in früheren Version mitgeliefert worden waren, sind seit Version 0.10nicht mehr direkt im Download enthalten, sondern <a href="https://github.com/BlueM/Pashua-Bindings">stehen in Form eines Repositories auf GitHub zur Verfügung</a>.</p>
+
+<p>Zwei Beispiele können einfach durch Doppelklicken gestartet werden: Das AppleScript-Beispiel sowie das »Doubleclickable Example« (bei dem es sich um eine Demonstration handelt, wie ein OS X Application Bundle von einem Skript gesteuert werden kann, das Pashua für die Benutzeroberfläche nutzt).<br />Alle anderen Beispiele müssen vom Terminal aus gestartet werden. Am simpelsten macht man das, indem man das Icon des gewünschten Beispiel-Skripts auf ein Ter&shy;mi&shy;nal-Fenster zieht und dann Return drückt.</p>
+
+<p><em>Wichtig:</em> Es wird erwartet, dass Pashua (also das Programm, nicht das aufrufende Skript) entweder im all&shy;ge&shy;mei&shy;nen Programm-Ordner <code>/Applications</code>, im persönlichen Programm-Ordner <code>~/Applications</code>, im gleichen Ordner wie das aufrufende Skript oder im aktuellen Arbeits&shy;verzeichnis liegt. Andernfalls wird die Ausführung mit einer Feh&shy;ler&shy;meldung abgebrochen. Natürlich lässt sich das aber anpassen, wenn ein anderes Verhalten benötigt wird. <em>(Um Pashua einfach auszuprobieren, muss man aber nichts installieren, denn die Beispiele laufen alle direkt vom Disk Image aus.)</em></p>
+
+<h2>Wie ist die genaue Syntax der Konfiguration?</h2>
+<p>Sämtliche GUI-Elementtypen und deren Attribute werden in der (englischsprachigen) <script>document.write(doc)</script> erklärt.</p>
+
+<h2>Was ist neu in Version 0.10.3?</h2>
+<ul>
+    <li>Element »Savebrowser«: wenn ein Default-Wert angegeben ist, wird der Dateiname im Speichern-Dialog entsprechend gesetzt.</li>
+    <li>Korrigiert ein Problem mit der Höhe von Combo-Boxen, das von v0.10.2 verursacht wurde.</li>
+</ul>
+
+<p>Pashua 0.10.3 wurde am 23.12.2015 veröffentlicht.<br />
+Informationen für ältere Versionen <a href="http://www.bluem.net/jump/pashua-versions/" target="_blank">finden Sie auf der Website</a></p>
+
+<h2>Das Kleingedruckte</h2>
+<p>Dieses Programm wird ohne jegliche Gewährleistung, Garantie, Support etc. zur Verfügung gestellt. Die Benut&shy;zung erfolgt auf eigenes Risiko, und sollte der unwahrscheinliche Fall auftreten, dass durch die Nutzung ein wie auch immer gearteter Schaden auftritt, kann niemand außer der das Programm benutzenden Person dafür haft&shy;bar gemacht werden.</p>
+
+<h2>Kontakt / Feedback</h2>
+<p>Carsten Blüm<br />
+E-Mail: <a href="mailto:macapps@bluem.net?Subject=Pashua%200.10.3">macapps@bluem.net</a><br />
+Pashua Homepage: <a href="http://www.bluem.net/de/mac/pashua/" target="_blank">www.bluem.net/de/mac/pashua/</a></p>
+
+</div>
+
+</body>
+</html>

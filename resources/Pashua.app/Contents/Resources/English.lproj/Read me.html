@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Pashua 0.10.3</title>
+<meta name="author" content="Carsten Blüm" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<script>
+var doc, mandatory;
+if (document.location.href.indexOf('/Volumes/Pashua') == -1) {
+    // Not launched from disk image
+    doc       = 'documentation';
+    mandatory = '';
+} else {
+    doc       = '<a href="file:///Volumes/Pashua/Documentation.html" target="_blank">documentation</a>';
+    mandatory = '(see <a href="file:///Volumes/Pashua/Documentation.html#topic.mandatory" target="_blank">documentation</a>)';
+}
+</script>
+
+<div id="frame">
+
+<header>
+    <a href="http://www.bluem.net/de/mac/" target="_blank"><span>Carsten Blüm Mac Development</span></a>
+</header>
+
+<h1>Pashua 0.10.3</h1>
+
+<h2>What is Pashua?</h2>
+<p>Pashua ist an application for creating “real” dialog windows from AppleScript, Bash, Perl, PHP, Python, Ruby, Tcl and other languages. The GUI elements which can be used for such dialogs include text input fields, checkboxes, radiobuttons, popup menus, buttons and so on. Moreover, it is also possible to embed images or PDFs.<br />
+Any data submitted from the dialog will be passed on to the calling script, which can (of course) use it for anything.<br />
+To describe the dialog window, Pashua uses a very simple syntax. All the tedious details such as positioning the elements, calculating the window size etc. are handled automatically by Pashua, thus you can fully concentrate on your application.</p>
+
+<h2>Price</h2>
+<p>Pashua is free. However, if you appreciate it and would like to send a “Thank you”, there are <a href="http://www.bluem.net/jump/donations/" target="_blank">a number of ways to do that</a>.</p>
+
+<h2>How to use</h2>
+<p>The Pashua download contains a folder “Examples” in which you will find demonstrations for using Pashua from AppleScript, Bash, Perl and PHP. Please refer to the comments in the example files for further information. Pashua can be used with a number of other languages, but as of Pashua 0.10, examples for some languages that had been distributed with Pashua in earlier releases are no longer included in the Pashua download. You will find the <a href="https://github.com/BlueM/Pashua-Bindings">example code in a repository on GitHub</a>.</p>
+
+<p>Two examples can be launched by simply doubleclicking the icon: the AppleScript example and the “Doubleclickable Example” (which is a demonstration of how you can build an OS X application bundle which is powered by a script and uses Pashua for its UI).<br />The other examples have to be started from the terminal. The easiest way to do this is to drag the script onto a Terminal.app window and hit Return.</p>
+
+<p><em>Important:</em> In order to work, Pashua (the application itself, not the calling script) must be located in the global application folder <code>/Applications</code>, in your personal application folder <code>~/Applications</code>, in the folder containing the calling script or in the working directory. Otherwise execution will fail. But of course you can modify the search locations according to your filesystem layout. <em>(But to simply launch the examples, you do not have to install anything: they will run directly from the disk image.)</em></p>
+
+<h2>Can you tell me more about the configuration syntax?</h2>
+<p>Pashua’s <script>document.write(doc)</script> explains the configuration syntax, as well as any GUI element types and their attributes.</p>
+
+<h2>What is new in version 0.10.3?</h2>
+<ul>
+    <li>Savebrowser: when default value is specified, the filename in the dialog is set accordingly.</li>
+    <li>Fix combobox height issue introduced with v0.10.2.</li>
+</ul>
+<p>Pashua 0.10.3 was released on 12/23/2015.<br />
+Release notes for previous versions can be found  <a href="http://www.bluem.net/jump/pashua-versions/" target="_blank">on the website</a></p>
+
+<h2>Disclaimer</h2>
+<p>This application is provided as-is. Support is not included. Use this software at your own risk. If for some obscure reason any damage or data loss may arise from using it (which in my opinion is nearly impossible), it is nobody else’s problem than yours.</p>
+
+<h2>Contact / Feedback</h2>
+<p>Carsten Blüm<br />
+E-Mail: <a href="mailto:macapps@bluem.net?Subject=Pashua%200.10.3">macapps@bluem.net</a><br />
+Pashua Homepage: <a href="http://www.bluem.net/en/mac/pashua/" target="_blank">www.bluem.net/en/mac/pashua/</a></p>
+
+</div>
+
+</body>
+</html>
