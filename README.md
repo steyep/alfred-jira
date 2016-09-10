@@ -4,7 +4,6 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 ### Installation: 
 * Clone/fork this repo
 * Run the install script `sh ./install.sh`
-* Install dependencies `npm install`
 
 ### Features:
 * List issues assigned to you

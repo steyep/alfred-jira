@@ -2,6 +2,14 @@ pushd $(dirname "$0") > /dev/null
 repo="$PWD"
 popd > /dev/null
 
+hash npm &> /dev/null && npm install || { 
+  echo
+  echo "Error: npm is required to install this workflow."
+  echo "https://docs.npmjs.com/getting-started/installing-node"
+  echo
+  exit 1
+}
+
 echo "Looking for Alfred Preferences..."
 paths=("$1" "$HOME/Dropbox" "$HOME/Library/Mobile Documents/com~apple~CloudDocs" "$HOME/Library/Application Support/Alfred 3" "$HOME/Library/Application Support/Alfred 2")
 
