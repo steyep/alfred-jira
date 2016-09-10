@@ -1,6 +1,6 @@
 ## Alfred-Jira
 This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with [JIRA](www.atlassian.com/JIRA‎).
-
+![Alt text](https://github.com/steyep/alfred-jira/raw/master/resources/demo.gif)
 ### Installation: 
 * Clone/fork this repo
 * Run the install script `sh ./install.sh`
