@@ -1,5 +1,5 @@
 ## Alfred-Jira
-This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with [JIRA](www.atlassian.com/JIRA‎).
+This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with [JIRA](http://www.atlassian.com/JIRA‎).
 ![Alt text](https://github.com/steyep/alfred-jira/raw/master/resources/demo.gif)
 ### Installation: 
 * Clone/fork this repo
@@ -42,3 +42,8 @@ For better performance, some information is persisted in `~/.alfred-jira`:
 * The list of available transitions will persist for 45 seconds
 * The list of search results will persist for 45 seconds
 * Update status will persist for 24 hours (unless an update **is** available – in which case the workflow stops checking for updates).
+
+### Optional:
+Additonally, you can download the avatars associated with the workflow's enabled projects:
+
+```npm run download-project-icons```
