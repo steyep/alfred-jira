@@ -2,6 +2,7 @@
 This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with [JIRA](http://www.atlassian.com/JIRA‎).
 ![Alt text](https://github.com/steyep/alfred-jira/raw/master/resources/demo.gif)
 ### Installation: 
+* [Install Node.js](https://nodejs.org/en/download/package-manager/) (if not already installed).
 * Clone/fork this repo
 * Run the install script `sh ./install.sh`
 
@@ -22,6 +23,7 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * Quickly add a comment to an issue
   * Within **Alfred**, simply select "Add a comment" for a given issue (by tabbing/pressing enter) and type the comment. Pressing `enter` will POST the comment to the issue. 
 * View an issue's *priority*
+* Watch/Unwatch an issue
 * Open issue in a web browser
 
 ### Settings:
