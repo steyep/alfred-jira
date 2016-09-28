@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "download-project-icons": "node ./lib/jira/grab-images.js"
+    "download-project-icons": "node ./lib/jira/grab-images.js projects",
+    "download-user-avatars": "node ./lib/jira/grab-images.js users"
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",
