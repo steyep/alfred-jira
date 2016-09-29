@@ -46,9 +46,10 @@ For better performance, some information is persisted in `~/.alfred-jira`:
 * Update status will persist for 24 hours (unless an update **is** available – in which case the workflow stops checking for updates).
 
 ### Optional:
-Additonally, you can download the avatars associated with the workflow's enabled projects & users:
+You can download the image resources associated with the workflow's enabled projects, users, and priority levels by running `npm run download-all-images` or you can selectively download resources by running the scripts individually: 
 
   ```
   npm run download-project-icons
   npm run download-user-avatars
+  npm run download-priority-icons
   ```
