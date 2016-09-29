@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "download-project-icons": "node ./lib/jira/grab-images.js projects",
-    "download-user-avatars": "node ./lib/jira/grab-images.js users"
+    "download-user-avatars": "node ./lib/jira/grab-images.js users",
+    "download-priority-icons": "node ./lib/jira/grab-images.js priorities",
+    "download-all-images": "node ./lib/jira/grab-images.js all"
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.13.1",
+    "moment": "^2.15.1",
     "node-persist": "^1.0.0",
     "xmlbuilder": "^8.2.2"
   },
