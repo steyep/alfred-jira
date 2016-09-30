@@ -4,7 +4,7 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 ### Installation: 
 * [Install Node.js](https://nodejs.org/en/download/package-manager/) (if not already installed).
 * Clone/fork this repo
-* Run the install script `sh ./install.sh`
+* Run the build script `npm run build`
 
 ### Features:
 * List issues assigned to you
@@ -24,6 +24,10 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
   * Within **Alfred**, simply select "Add a comment" for a given issue (by tabbing/pressing enter) and type the comment. Pressing `enter` will POST the comment to the issue. 
 * View an issue's *priority*
 * Watch/Unwatch an issue
+* Effortlessly track time-spent on an issue
+  * When viewing an issue's details in **Alfred**, you can start/stop progress on a given issue
+    * **Starting** progress will move the issue to the main menu for quick access and begin automatically tracking time.
+    * **Stopping** progress will log the time spent on an issue to JIRA as well as the exact time/date you began working on the issue.
 * Open issue in a web browser
 
 ### Settings:

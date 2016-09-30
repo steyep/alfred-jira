@@ -8,7 +8,8 @@
     "download-project-icons": "node ./lib/jira/grab-images.js projects",
     "download-user-avatars": "node ./lib/jira/grab-images.js users",
     "download-priority-icons": "node ./lib/jira/grab-images.js priorities",
-    "download-all-images": "node ./lib/jira/grab-images.js all"
+    "download-all-images": "node ./lib/jira/grab-images.js all",
+    "build": "sh ./bin/install.sh"
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",

@@ -1,5 +1,5 @@
 pushd $(dirname "$0") > /dev/null
-repo="$PWD"
+repo="$(dirname "$PWD")"
 popd > /dev/null
 
 hash npm &> /dev/null && npm install || { 
