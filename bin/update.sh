@@ -20,10 +20,10 @@ cancel.type = cancelbutton
 cancel.label = Later
 "
 
-upstream="$(git branch -lvv | grep \* | sed 's/.*\[\(.*\):.*/\1/')"
+upstream="$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
 [[ -z "$upstream" ]] && upstream="origin/master"
 
-git reset --hard $upstream
+git reset --hard $upstream && npm install 
 echo "Workflow updated"
 
 result="$(pashua_run "$conf")"
