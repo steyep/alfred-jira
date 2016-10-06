@@ -11,11 +11,11 @@ extension=$(file -b --mime-type $output | sed -E 's_.*/([^\+]*).*_\1_')
 file_name="$output.$extension"
 mv $output $file_name
 
-if [[ "$extension" == "svg" ]]; then
-  qlmanage -t -s 48 -o $(dirname $output) $output.svg 1>&2
+if [[ "$extension" != "png" ]]; then
+  qlmanage -t -s 48 -o $(dirname $output) $output.$extension 1>&2
   file_name="$output.png"
-  rm -f $output.svg
-  mv $output.svg.png $file_name
+  rm -f $output.$extension
+  mv $output.$extension.png $file_name
 fi
 
 echo "File created: $file_name"
