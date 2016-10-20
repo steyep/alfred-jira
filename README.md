@@ -46,7 +46,21 @@ When logging time to issues, you may wish to set a minimum amount of time to log
   "minimum_log_time": "30m",
   ```
 Both examples above will always log a minimum of `30 minutes` to issues you work on. 
+#### Customizing
+By default, all items associated with a specific issue will be returned when viewing an issue's details. You can specify which items are returned so that the information that is pertinent to you is easily accessible. To enable _all_ items, open the settings file, and add the following array to the `options`:
 
+  ```
+  "enabled_menu_items": [
+      "summary",
+      "description",
+      "progress",
+      "assignee",
+      "status",
+      "comment",
+      "watch",
+      "priority"
+    ],
+  ```
 Clearing the workflow settings and logging in will restore the defaults.
 
 ## Security
