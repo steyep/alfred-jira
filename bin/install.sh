@@ -11,7 +11,7 @@ hash npm &> /dev/null && npm install || {
 }
 
 echo "Looking for Alfred Preferences..."
-paths=("$1" "$HOME/Dropbox" "$HOME/Library/Mobile Documents/com~apple~CloudDocs" "$HOME/Library/Application Support/Alfred 3" "$HOME/Library/Application Support/Alfred 2")
+paths=("$1" "$HOME/Dropbox" "$HOME/Library/Mobile Documents/com~apple~CloudDocs" "$HOME/Google Drive" "$HOME/Library/Application Support/Alfred 3" "$HOME/Library/Application Support/Alfred 2")
 
 for i in "${paths[@]}"; do
   d=${i// /\ }
