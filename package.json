@@ -13,6 +13,10 @@
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",
+  "engines": {
+    "node" : ">=6.0.0"
+  },
+  "os": ["darwin"],
   "dependencies": {
     "axios": "^0.13.1",
     "moment": "^2.15.1",

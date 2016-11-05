@@ -2,7 +2,7 @@
 This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with [JIRA](http://www.atlassian.com/jira).
 ![Alt text](https://github.com/steyep/alfred-jira/raw/master/resources/demo.gif)
 ## Installation 
-* [Install Node.js](https://nodejs.org/en/download/package-manager/) (if not already installed).
+* [Install Node.js](https://nodejs.org/en/download/package-manager/) (`>=6.0.0`).
 * Clone/fork this repo
 * Run the build script `npm run build`
 
