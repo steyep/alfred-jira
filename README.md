@@ -37,6 +37,8 @@ After installing the workflow and logging in, the workflow will default to inclu
 This can be easily done by selecting `Edit Settings` from the `Settings` menu and clicking the buttons associated with the statuses you wish to disable/enable.
 #### Minimum Log Time
 When logging time to issues, you may wish to set a minimum amount of time to log. A minimum can be set by adding the desired amount of time to the "**minimum time to log**" field of the settings pane. The format for time is the same as in JIRA: `.5 h` and `30m` both log a minimum of `30 minutes` to issues you work on.
+#### Rounding Log Time
+It is possible to define an increment with which to round your log time by defining "**Round time to the nearest increment**" in the settings pane. Doing so will round your time spent on an issue to the nearest `increment` defined. For example: with `15 mins` increments, `1 hour 51 minutes` spent on an issue would be logged as `2 hours`. Note that the format of the value is the same as described in the *Minimum Log Time* section.
 #### Searching
 By default, the workflow is set up to perform a *basic* search. Meaning, from the search option, Alfred will return a list of issues that contain the string(s) you typed in their summary, description, or comment fields. If you would prefer more control over the search, you can enable [JQL searching](https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html) by ticking the "**Advanced Search (JQL)**" under the **Settings** header of the settings pane.
 #### Customizing
