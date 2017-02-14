@@ -19,8 +19,11 @@
   "dependencies": {
     "angular": "^1.6.2",
     "axios": "^0.13.1",
+<<<<<<< HEAD
     "electron": "^1.6.1",
     "font-awesome": "^4.7.0",
+=======
+>>>>>>> Issue #29: Removes debounce
     "moment": "^2.15.1",
     "node-persist": "^1.0.0",
     "xmlbuilder": "^8.2.2"
