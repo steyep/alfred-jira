@@ -17,6 +17,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>8EB4D1DF-1C75-4EBD-A15C-F355B43B0B57</key>
@@ -28,6 +30,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
@@ -44,6 +48,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
 				<key>argumenttype</key>
 				<integer>1</integer>
 				<key>escaping</key>
@@ -58,8 +64,16 @@
 				<integer>0</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
 				<key>script</key>
 				<string>/usr/local/bin/node ./lib/scriptfilter.js "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
 				<string>Alfred Jira Workflow</string>
 				<key>type</key>
@@ -72,26 +86,7 @@
 			<key>uid</key>
 			<string>8EB4D1DF-1C75-4EBD-A15C-F355B43B0B57</string>
 			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>39</integer>
-				<key>script</key>
-				<string>/usr/local/bin/node ./lib/action.js {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</string>
-			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -100,11 +95,7 @@
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<true/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>{query}</string>
@@ -116,7 +107,30 @@
 			<key>uid</key>
 			<string>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>39</integer>
+				<key>script</key>
+				<string>/usr/local/bin/node ./lib/action.js {query}</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -125,16 +139,22 @@
 	<dict>
 		<key>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
 		<key>8EB4D1DF-1C75-4EBD-A15C-F355B43B0B57</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
 		<key>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
