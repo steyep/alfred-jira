@@ -1,4 +1,5 @@
 const config = require('../lib/jira/config');
+const keychain = require('../lib/jira/keychain');
 const cfgFile = config.cfgPath + config.cfgFile;
 const fs = require('fs');
 const { ipcRenderer, remote } = require('electron');
@@ -29,7 +30,15 @@ const icon = remote.getGlobal('icon');
 
 let app = angular.module('alfred-jira', []);
 
-app.controller('ctrl', ['$scope', '$timeout', ($scope, $timeout) => {
+app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $element) => {
+  
+  // Cancel login when esc is pressed.
+  $element.bind("keydown keypress", function (event) {
+    if (event.key === 'Escape' || event.which === 27) {
+      $timeout($scope.cancelLogin, 0);
+    }
+  });
+
   let data = getData();
 
   $scope.appName = appName;
@@ -43,6 +52,42 @@ app.controller('ctrl', ['$scope', '$timeout', ($scope, $timeout) => {
     available_issues_statuses: []
   };
   ValidateOptions($scope.options);
+
+  let protocol = ($scope.data.url || '').match(/http:\/\//);
+  if ($scope.ssl === undefined) {
+    $scope.ssl = !protocol;
+  }
+
+  const removeProtocol = url => (url || '').replace(/\s+|https?:\/\//gi, '');
+  $scope.loginData = {
+    user: $scope.data.user,
+    url: $scope.data.url
+  };
+
+  $scope.$watch('loginData.url', 
+    () => $scope.loginData.url = removeProtocol($scope.loginData.url));
+
+  $scope.login = () => {
+    let user = $scope.loginData.user;
+    let pass = $scope.loginData.password;
+    let protocol = $scope.ssl ? 'https://' : 'http://';
+    $scope.data.url = protocol + $scope.loginData.url.replace(/(.)\/*$/, '$1/');
+
+    if (user && pass && $scope.data.url) {
+      let token = new Buffer(user + ':' + pass).toString('base64');
+      keychain.save(token);
+      delete $scope.loginData.password;
+      $scope.showLogin = false;
+    }
+  }
+
+  $scope.cancelLogin = () => {
+    let data = getData();
+    $scope.loginData.user = data.user;
+    $scope.loginData.url = data.url;
+    delete $scope.loginData.password;
+    $scope.showLogin = false;
+  }
 
   $scope.save = () => {
     $scope.data.url = $scope.data.url.replace(/(.)\/*$/, '$1/');

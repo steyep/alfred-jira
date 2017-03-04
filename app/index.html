@@ -8,7 +8,7 @@
     <div class="container">
       
       <!-- Nav Menu -->
-      <nav>
+      <nav  ng-show="!showLogin">
         <div class="nav-container">
           <div class="logo" ng-style="{'background-image': 'url({{ icon }})'}">
             <h2>{{ appName }}</h2>
@@ -26,8 +26,67 @@
         </div>
       </nav>
       
+      <!-- Login Screen -->
+      <div class="flex-column login" ng-show="showLogin">
+        
+        <!-- Login Header -->
+        <div class="login-header">
+          <div class="logo" ng-style="{'background-image': 'url({{icon}})'}"></div>
+          <h1>{{appName}}</h1>
+        </div>
+        <hr>
+
+        <!-- Login Fields -->
+        <form name="loginForm" id="loginForm" novalidate>
+          <ul class="flex-outer login">
+            <li>
+              <label for="url">Jira URL</label>
+              <div class="InputAddOn" ng-class="{'addon-selected': focused, 'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }">
+                <span ng-click="ssl = !ssl" class="InputAddOn-item" ng-bind="ssl ? 'https://' : 'http://'"></span>
+                <input 
+                  id="login-url"
+                  class="InputAddOn-field"
+                  type="text"
+                  ng-model="loginData.url"
+                  name="url" 
+                  ng-class="{'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }"
+                  ng-focus="focused = true"
+                  ng-blur="focused = false"
+                  ng-trim='false'
+                  required
+                />
+              </div>
+            </li>
+            <li>
+              <label for="username" >Username</label>
+              <input 
+                type="text"
+                ng-model="loginData.user"
+                name="username" 
+                ng-class="{'has-error': loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched) }"
+                required>
+              </input>
+            </li>
+            <li>
+              <label for="password">Password</label>
+              <input 
+                type="password"
+                ng-model="loginData.password"
+                name="password"
+                ng-class="{'has-error': loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$touched) }"
+                required>
+              </input>
+            </li>
+            <li>
+              <button type="submit" ng-click="login()">Login</button>
+              <button type="button" ng-click="cancelLogin()">Cancel</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+      
       <!-- Settings Form -->
-      <div class="flex-column">
+      <div class="flex-column"  ng-show="!showLogin">
         <form id="settings-form">
         
         <!-- General User Settings -->
@@ -39,7 +98,8 @@
             <ul class="flex-outer">
               <li>
                 <label for="url">Jira URL</label>
-                <input type="text" ng-model="data.url" placeholder="" />
+                <input type="text" ng-model="data.url" placeholder="" disabled/>
+                <button type="button" class="inline-button" ng-click="showLogin = true"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
               </li>
               <li>
                 <label for="minimum_log_time">Minimum time to log</label>
