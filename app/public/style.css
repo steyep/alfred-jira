@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  background: #efefef;
+  animation: fadein 0.5s;
+  color: #6A6A6A;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+li > input, select, textarea {
+  outline: none;
+  padding: 10px;
+  background-color: #E8E8E8;
+  border: #CDCDCD solid 1px;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+li > input:hover:enabled,
+li > input:focus,
+textarea:hover,
+textarea:focus,
+select:hover,
+select:focus {
+  border: #4ba8d8 1px solid;
+}
+
+hr {
+  margin: 17px 0 18px;
+  height: 0;
+  clear: both;
+  border: solid #E8E8E8;
+  border-width: 1px 0 0;
+  border-bottom: 1px solid #F1F1F1;
+  border-top: 1px solid #D7D7D7;
+}
+
+h3 {
+  padding: 0;
+  margin: 0;
+  color: #4ba8d8;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-title > input {
+  flex: 1;
+  text-align: right;
+  margin-left: 20px;
+  background-color: #efefef;
+  border: none;
+  border-radius: 0;
+  font-family: 'FontAwesome', 'Open Sans', sans-serif;
+}
+
+.section-title > input:focus {
+  outline: none;
+  border-bottom: #4ba8d8 solid 1px;
+}
+
+.logo {
+  margin: 20px 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 100px;
+  width: 260px;
+}
+
+.logo > h2 {
+  padding: 20px 100px 0px 20px;
+  color: #4ba8d8;
+  margin: 0;
+}
+
+.logo > p {
+  padding:0 100px 10px 20px;
+  color: #fff;
+  margin: 0;
+  font-size: small;
+}
+
+.disabled {
+  color: #ccc;
+}
+
+section {
+  padding-top:30px;
+  margin-bottom: 85px;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100%;
+}
+
+nav {
+  min-width: 210px;
+  background: #222222;
+  margin-right: 40px;
+}
+
+.menu a {
+  cursor: default;
+  text-decoration: none;
+  padding-right: 20px;
+}
+.nav-container {
+  position: fixed;
+}
+.menu {
+  width: inherit;
+  cursor: default;
+  padding-right: 50px;
+}
+.menu ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto 0;
+  padding: 0;
+}
+
+.menu li {
+  flex: 1;
+  display: flex;
+  flex-direction: row-reverse;
+  color: #79a7bf;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  padding: 10px 0 10px 10px;
+}
+
+.menu li:hover {
+  background-color: #2E2E2E;
+}
+
+.menu i {
+  flex: 1 0 20px;
+  color: #fff;
+  max-width: 40px;
+}
+
+.flex-column {
+  max-width: 900px;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  flex: 1;
+  flex-direction: column;
+}
+
+.login {
+  margin: auto;
+}
+
+/* General Forms */
+.flex-outer li,
+.flex-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-outer > li > label {
+  margin-right: 20px;
+}
+
+.flex-outer > li > label + *,
+.flex-inner {
+  flex: 1 0 220px;
+}
+
+.login > li > label {
+  min-width: 120px;
+}
+
+.flex-outer > li:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.flex-outer li button {
+  margin-right: 20px;
+  padding: 8px 16px;
+  border: none;
+  background: #333;
+  color: #f2f2f2;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  border-radius: 2px;
+  flex: 1 0 150px;
+}
+.flex-outer li button:last-of-type {
+  margin-right: 0;
+}
+
+.flex-outer li button.inline-button {
+    border-radius: 4px;
+    margin-left: 20px;
+    background: #383838;
+    padding: 10px;
+    max-width: 92px;
+}
+
+.flex-outer li button.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.flex-outer li.optional {
+  align-items: stretch;
+}
+
+.flex-inner {
+  flex: 1;
+  justify-content: space-between;
+}
+
+/* checkbox to button */
+#ck-button {
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:3px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+    float:left;
+}
+
+#ck-button label span {
+    text-align:center;
+    padding:8px;
+    display:block;
+}
+
+#ck-button input:checked + span {
+    background-color: #889aa7;
+    color:#fff;
+}

@@ -1,0 +1,112 @@
+<html ng-app="alfred-jira" ng-controller="ctrl">
+  <head>
+    <title>{{ appName }}</title>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/style.css" charset="utf-8">
+  </head>
+  <body>
+    <div class="container">
+      
+      <!-- Nav Menu -->
+      <nav>
+        <div class="nav-container">
+          <div class="logo" ng-style="{'background-image': 'url({{ icon }})'}">
+            <h2>{{ appName }}</h2>
+            <p>v. {{ version }}</p>
+          </div>
+          <div class="menu">
+            <ul>
+              <a href="#settings"><li>Settings</li></a>
+              <a href="#menu-items"><li>Menu Items</li></a>
+              <a href="#projects"><li>Projects</li></a>
+              <a href="#statuses"><li>Statuses</li></a>
+              <li ng-click="save()" class="save"><i class="fa fa-fw fa-floppy-o"></i>Save</li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+      <!-- Settings Form -->
+      <div class="flex-column">
+        <form id="settings-form">
+        
+        <!-- General User Settings -->
+        <section id="settings">
+          <div class="section-title">
+            <h3>Settings</h3>            
+          </div>
+            <hr>
+            <ul class="flex-outer">
+              <li>
+                <label for="url">Jira URL</label>
+                <input type="text" ng-model="data.url" placeholder="" />
+              </li>
+              <li>
+                <label for="minimum_log_time">Minimum time to log</label>
+                <input type="text" ng-model="options.minimum_log_time"/>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Enabled Menu Items -->
+          <section id="menu-items">
+            <div class="section-title">
+              <h3>Enabled Menu Items</h3>              
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="menuItem in options.enabled_menu_items">
+                <div id="ck-button">
+                  <label for="{{ menuItem.name }}" ng-class="{'disabled': !menuItem.enabled}">
+                    <input id="{{ menuItem.name }}" name="{{ menuItem.name }}" type="checkbox" ng-model="menuItem.enabled" hidden />
+                    <span>{{ menuItem.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Enabled Projects -->
+          <section id="projects">
+            <div class="section-title">
+              <h3>Enabled Projects</h3>
+              <input type="text" ng-model="projectFilter" placeholder="Filter Projects &#xf002;"/>
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="project in options.available_projects | filter: projectFilter">
+                <div id="ck-button">
+                  <label for="{{ project.name }}" ng-class="{'disabled': !project.enabled}">
+                    <input id="{{ project.name }}" name="{{ project.name }}" type="checkbox" ng-model="project.enabled" hidden/>
+                    <span>{{ project.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>  
+          </section>
+          
+          <!-- Enabled Statuses -->
+          <section id="statuses">
+            <div class="section-title">
+              <h3>Enabled Issue Statuses</h3>
+              <input type="text" ng-model="statusFilter" placeholder="Filter Statuses &#xf002;"/>
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="status in options.available_issues_statuses | filter: statusFilter">
+                <div id="ck-button">
+                  <label for="{{ status.name }}" ng-class="{'disabled': !status.enabled}">
+                    <input id="{{ status.name }}" name="{{ status.name }}" type="checkbox" ng-model="status.enabled" hidden/>
+                    <span>{{ status.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </section>
+        
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>
