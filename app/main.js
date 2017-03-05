@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
 const jira = require('../lib/jira');
 const config = require('../lib/jira/config');
+const Extras = require('../lib/jira/grab-images');
 const cwd = process.cwd();
 
 let win = null;
@@ -122,3 +123,9 @@ ipcMain.on('clearCache', event => {
     })
   })
 })
+
+ipcMain.on('download-imgs', (event, type) => {
+  Extras(type, () => {
+    event.sender.send('download-complete', type);
+  });
+});

@@ -165,7 +165,33 @@
               </li>
             </ul>
           </section>
-        
+          
+          <!-- Optional -->
+          <section id="optional">
+          <div class="section-title">
+            <h3>Optional</h3>  
+          </div>
+          <hr>
+          <ul class="flex-outer">
+            <li class="optional">
+              <button type="button" ng-click="download('projects')" ng-class="{'disabled': inProgress.projects}" ng-disabled="inProgress.projects">
+                <i class="fa fa-download" ng-show="!inProgress.projects"></i>
+                <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.projects"></i>
+                Jira Project Icons
+              </button>
+              <button type="button" ng-click="download('users')" ng-class="{'disabled': inProgress.users}" ng-disabled="inProgress.users">
+                <i class="fa fa-download" ng-show="!inProgress.users"></i>
+                <i class="fa fa-spinner fa-spin fa-lg " ng-show="inProgress.users"></i>
+                User Avatars
+              </button>
+              <button type="button" ng-click="download('priorities')" ng-class="{'disabled': inProgress.priorities}" ng-disabled="inProgress.priorities">
+                <i class="fa fa-download" ng-show="!inProgress.priorities"></i>
+                <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.priorities"></i>
+                Jira Priority Icons
+              </button>
+            </li>
+          </ul>
+        </section>
         </form>
       </div>
     </div>

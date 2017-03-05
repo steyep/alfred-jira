@@ -111,6 +111,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     window.onbeforeunload = undefined;
   }
 
+  $scope.inProgress = {};
+  
+  $scope.download = type => {
+    ipcRenderer.send('download-imgs', type);
+    $timeout(() => $scope.inProgress[type] = true, 0);
+  }
+
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {
@@ -139,4 +146,12 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     if (res === 0) $scope.save();
     ipcRenderer.send('close');
   });
+
+  ipcRenderer.on('download-complete', (channel, type) => {
+    $timeout(() => $scope.inProgress[type] = false, 0);
+    new Notification(appName, {
+      body: `Finished downloading icons: ${type}`,
+      icon: icon
+    });
+  })
 }]);

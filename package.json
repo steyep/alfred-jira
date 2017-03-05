@@ -5,10 +5,6 @@
   "main": "./app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "download-project-icons": "node ./lib/jira/grab-images.js projects",
-    "download-user-avatars": "node ./lib/jira/grab-images.js users",
-    "download-priority-icons": "node ./lib/jira/grab-images.js priorities",
-    "download-all-images": "node ./lib/jira/grab-images.js all",
     "build": "sh ./bin/install.sh",
     "electron": "./node_modules/.bin/electron . 1>/dev/null"
   },
