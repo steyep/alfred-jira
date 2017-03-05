@@ -104,6 +104,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     ipcRenderer.send('close');
   }
 
+  $scope.clearCache = () => ipcRenderer.send('clearCache');
+
   $scope.logout = function() {
     ipcRenderer.send('logout');
     window.onbeforeunload = undefined;

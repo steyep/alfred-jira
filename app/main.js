@@ -111,3 +111,14 @@ ipcMain.on('logout', event => {
     }
   });
 })
+
+ipcMain.on('clearCache', event => {
+  jira.clearCache().then(res => {
+    dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {
+      type: 'info',
+      message: 'Cache cleared!',
+      title: app.getName(),
+      icon: icon
+    })
+  })
+})
