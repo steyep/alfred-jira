@@ -12,8 +12,13 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * List issues that you are "watching"
   * Returns a list of JIRA issues that you are currently watching
   * Ordered in descending order of when they were last updated
+* Easily filter your issues and the issues you are watching by *any* string in the issue (including `status`, `reporter`, etc).
+  * `jira` followed by the search string will search your assigned & watched issues
+  * The same can be done within the `My Tickets` and `Watched Issues` menus but will limit the search to the menu you are currently on.
+  * Wildcards and Regular Expressions are valid search strings
 * Search JIRA
   * Returns a list of JIRA issues that contain the search string in the **summary**, **description**, or **comments**
+  * Allows for advanced searching using JQL
   * Ordered in descending order by priority and then by issue name.
 * Assign an issue
   * Presents a list of assignable users for a given issue
@@ -32,39 +37,23 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 
 ## Settings
 #### Projects & Statuses
-After installing the workflow and logging in, an array of all available _projects_ and _statuses_ will be created. It is recommended that you edit this list to give you better results. For example: removing `Closed` from the list of enabled statuses. 
+After installing the workflow and logging in, the workflow will default to include all projects and statuses available in your JIRA instance. It is recommended that you open the settings pane and configuring the workflow to show only the projects and issue statuses that you are interested in. For example: disabling `Done` and `Closed` issue statuses.
 
-This can be easily done by selecting `Edit Settings` from the `Settings` menu and removing unwanted statuses/projects from the `available_projects` and `available_issues_statuses` arrays. 
+This can be easily done by selecting `Edit Settings` from the `Settings` menu and clicking the buttons associated with the statuses you wish to disable/enable.
 #### Minimum Log Time
-When logging time to issues, you may wish to set a minimum amount of time to log. A minimum can be set by adding `minimum_log_time` to the config file. The format for the minimum value is similar to the format used in JIRA:
-
-  ```
-  "minimum_log_time": ".5 h",
-  ```
-
-  ```
-  "minimum_log_time": "30m",
-  ```
-Both examples above will always log a minimum of `30 minutes` to issues you work on. 
+When logging time to issues, you may wish to set a minimum amount of time to log. A minimum can be set by adding the desired amount of time to the "**minimum time to log**" field of the settings pane. The format for time is the same as in JIRA: `.5 h` and `30m` both log a minimum of `30 minutes` to issues you work on.
+#### Rounding Log Time
+It is possible to define an increment with which to round your log time by defining "**Round time to the nearest increment**" in the settings pane. Doing so will round your time spent on an issue to the nearest `increment` defined. For example: with `15 mins` increments, `1 hour 51 minutes` spent on an issue would be logged as `2 hours`. Note that the format of the value is the same as described in the *Minimum Log Time* section.
+#### Searching
+By default, the workflow is set up to perform a *basic* search. Meaning, from the search option, Alfred will return a list of issues that contain the string(s) you typed in their summary, description, or comment fields. If you would prefer more control over the search, you can enable [JQL searching](https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html) by ticking the "**Advanced Search (JQL)**" under the **Settings** header of the settings pane.
 #### Customizing
-By default, all items associated with a specific issue will be returned when viewing an issue's details. You can specify which items are returned so that the information that is pertinent to you is easily accessible. To enable _all_ items, open the settings file, and add the following array to the `options`:
+By default, all items associated with a specific issue will be returned when viewing an issue's details. You can specify which items are returned so that the information that is pertinent to you is easily accessible. Enable/disable menu items from the settings pane.
 
-  ```
-  "enabled_menu_items": [
-      "summary",
-      "description",
-      "progress",
-      "assignee",
-      "status",
-      "comment",
-      "watch",
-      "priority"
-    ],
-  ```
-Clearing the workflow settings and logging in will restore the defaults.
+## Optional
+You can download the image resources associated with the workflow's enabled projects, users, and priority levels via the buttons at the bottom of the settings pane under the **Optional** header. 
 
 ## Security
-In order to authenticate against the JIRA API, your username/password will be required. They will be saved in **Keychain Access**  under the name `alfred-jira`. Additionally, a configuration file will be created at `~/.alfred-jira`. Both can be removed by selecting **Clear workflow settings** from the `settings` menu.
+In order to authenticate against the JIRA API, your username/password will be required. They will be saved in **Keychain Access**  under the name `alfred-jira`. Additionally, a configuration file will be created at `~/.alfred-jira`. Both can be removed by selecting **Logout** from the settings pane.
 
 ## Performance
 For better performance, some information is persisted in `~/.alfred-jira`:
@@ -74,12 +63,3 @@ For better performance, some information is persisted in `~/.alfred-jira`:
 * The list of available transitions will persist for 45 seconds
 * The list of search results will persist for 45 seconds
 * Update status will persist for 24 hours (unless an update **is** available – in which case the workflow stops checking for updates).
-
-## Optional
-You can download the image resources associated with the workflow's enabled projects, users, and priority levels by running `npm run download-all-images` or you can selectively download resources by running the scripts individually: 
-
-  ```
-  npm run download-project-icons
-  npm run download-user-avatars
-  npm run download-priority-icons
-  ```

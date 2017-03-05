@@ -1,0 +1,206 @@
+<html ng-app="alfred-jira" ng-controller="ctrl">
+  <head>
+    <title>{{ appName }}</title>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/style.css" charset="utf-8">
+  </head>
+  <body>
+    <div class="container">
+      
+      <!-- Nav Menu -->
+      <nav  ng-show="!showLogin">
+        <div class="nav-container">
+          <div class="logo" ng-style="{'background-image': 'url({{ icon }})'}">
+            <h2>{{ appName }}</h2>
+            <p>v. {{ version }}</p>
+          </div>
+          <div class="menu">
+            <ul>
+              <li ng-click="save()" class="save"><i class="fa fa-fw fa-floppy-o fa-lg"></i>Save</li>
+              <li ng-click="clearCache()"><i class="fa fa-fw fa-trash-o fa-lg"></i>Clear Cache</li>
+              <li ng-click="logout()"><i class="fa fa-fw fa-sign-out fa-lg"></i>Logout</li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+      <!-- Login Screen -->
+      <div class="flex-column login" ng-show="showLogin">
+        
+        <!-- Login Header -->
+        <div class="login-header">
+          <div class="logo" ng-style="{'background-image': 'url({{icon}})'}"></div>
+          <h1>{{appName}}</h1>
+        </div>
+        <hr>
+
+        <!-- Login Fields -->
+        <form name="loginForm" id="loginForm" novalidate>
+          <ul class="flex-outer login">
+            <li>
+              <label for="url">Jira URL</label>
+              <div class="InputAddOn" ng-class="{'addon-selected': focused, 'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }">
+                <span ng-click="ssl = !ssl" class="InputAddOn-item" ng-bind="ssl ? 'https://' : 'http://'"></span>
+                <input 
+                  id="login-url"
+                  class="InputAddOn-field"
+                  type="text"
+                  ng-model="loginData.url"
+                  name="url" 
+                  ng-class="{'has-error': loginForm.url.$invalid && (loginForm.$submitted || loginForm.url.$touched) }"
+                  ng-focus="focused = true"
+                  ng-blur="focused = false"
+                  ng-trim='false'
+                  required
+                />
+              </div>
+            </li>
+            <li>
+              <label for="username" >Username</label>
+              <input 
+                type="text"
+                ng-model="loginData.user"
+                name="username" 
+                ng-class="{'has-error': loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched) }"
+                required>
+              </input>
+            </li>
+            <li>
+              <label for="password">Password</label>
+              <input 
+                type="password"
+                ng-model="loginData.password"
+                name="password"
+                ng-class="{'has-error': loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$touched) }"
+                required>
+              </input>
+            </li>
+            <li>
+              <button type="submit" ng-click="login()">Login</button>
+              <button type="button" ng-click="cancelLogin()">Cancel</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+      
+      <!-- Settings Form -->
+      <div class="flex-column"  ng-show="!showLogin">
+        <form id="settings-form">
+        
+        <!-- General User Settings -->
+        <section id="settings">
+          <div class="section-title">
+            <h3>Settings</h3>            
+          </div>
+            <hr>
+            <ul class="flex-outer">
+              <li>
+                <label for="url">Jira URL</label>
+                <input type="text" ng-model="data.url" placeholder="" disabled/>
+                <button type="button" class="inline-button" ng-click="showLogin = true"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
+              </li>
+              <li>
+                <label for="minimum_log_time">Minimum time to log</label>
+                <input type="text" ng-model="options.minimum_log_time"/>
+              </li>
+              <li>
+                <label for="log_time_increments">Round time to the nearest increment</label>
+                <input type="text" ng-model="options.log_time_increments"/>
+              </li>
+            </ul>
+            <ul class="flex-inner">
+              <li>
+                <input id="advancedSearch" name="advancedSearch" type="checkbox" ng-model="options.advancedSearch"/>
+                <label for="advancedSearch">Advanced Search (JQL)</label>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Enabled Menu Items -->
+          <section id="menu-items">
+            <div class="section-title">
+              <h3>Enabled Menu Items</h3>              
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="menuItem in options.enabled_menu_items">
+                <div id="ck-button">
+                  <label for="{{ menuItem.name }}" ng-class="{'disabled': !menuItem.enabled}">
+                    <input id="{{ menuItem.name }}" name="{{ menuItem.name }}" type="checkbox" ng-model="menuItem.enabled" hidden />
+                    <span>{{ menuItem.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Enabled Projects -->
+          <section id="projects">
+            <div class="section-title">
+              <h3>Enabled Projects</h3>
+              <input type="text" ng-model="projectFilter" placeholder="Filter Projects &#xf002;"/>
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="project in options.available_projects | filter: projectFilter">
+                <div id="ck-button">
+                  <label for="{{ project.name }}" ng-class="{'disabled': !project.enabled}">
+                    <input id="{{ project.name }}" name="{{ project.name }}" type="checkbox" ng-model="project.enabled" hidden/>
+                    <span>{{ project.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>  
+          </section>
+          
+          <!-- Enabled Statuses -->
+          <section id="statuses">
+            <div class="section-title">
+              <h3>Enabled Issue Statuses</h3>
+              <input type="text" ng-model="statusFilter" placeholder="Filter Statuses &#xf002;"/>
+            </div>
+            <hr>
+            <ul class="flex-inner">
+              <li ng-repeat="status in options.available_issues_statuses | filter: statusFilter">
+                <div id="ck-button">
+                  <label for="{{ status.name }}" ng-class="{'disabled': !status.enabled}">
+                    <input id="{{ status.name }}" name="{{ status.name }}" type="checkbox" ng-model="status.enabled" hidden/>
+                    <span>{{ status.name }}</span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Optional -->
+          <section id="optional">
+          <div class="section-title">
+            <h3>Optional</h3>  
+          </div>
+          <hr>
+          <ul class="flex-outer">
+            <li class="optional">
+              <button type="button" ng-click="download('projects')" ng-class="{'disabled': inProgress.projects}" ng-disabled="inProgress.projects">
+                <i class="fa fa-download" ng-show="!inProgress.projects"></i>
+                <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.projects"></i>
+                Jira Project Icons
+              </button>
+              <button type="button" ng-click="download('users')" ng-class="{'disabled': inProgress.users}" ng-disabled="inProgress.users">
+                <i class="fa fa-download" ng-show="!inProgress.users"></i>
+                <i class="fa fa-spinner fa-spin fa-lg " ng-show="inProgress.users"></i>
+                User Avatars
+              </button>
+              <button type="button" ng-click="download('priorities')" ng-class="{'disabled': inProgress.priorities}" ng-disabled="inProgress.priorities">
+                <i class="fa fa-download" ng-show="!inProgress.priorities"></i>
+                <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.priorities"></i>
+                Jira Priority Icons
+              </button>
+            </li>
+          </ul>
+        </section>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>

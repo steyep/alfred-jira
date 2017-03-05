@@ -2,23 +2,25 @@
   "name": "alfred-jira",
   "version": "1.0.0",
   "description": "An Alfred workflow to interact with Jira",
-  "main": "app.js",
+  "main": "./app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "download-project-icons": "node ./lib/jira/grab-images.js projects",
-    "download-user-avatars": "node ./lib/jira/grab-images.js users",
-    "download-priority-icons": "node ./lib/jira/grab-images.js priorities",
-    "download-all-images": "node ./lib/jira/grab-images.js all",
-    "build": "sh ./bin/install.sh"
+    "build": "sh ./bin/install.sh",
+    "electron": "./node_modules/.bin/electron . 1>/dev/null"
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",
   "engines": {
-    "node" : ">=6.0.0"
+    "node": ">=6.0.0"
   },
-  "os": ["darwin"],
+  "os": [
+    "darwin"
+  ],
   "dependencies": {
+    "angular": "^1.6.2",
     "axios": "^0.13.1",
+    "electron": "^1.6.1",
+    "font-awesome": "^4.7.0",
     "moment": "^2.15.1",
     "node-persist": "^1.0.0",
     "xmlbuilder": "^8.2.2"
