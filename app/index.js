@@ -104,6 +104,11 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     ipcRenderer.send('close');
   }
 
+  $scope.logout = function() {
+    ipcRenderer.send('logout');
+    window.onbeforeunload = undefined;
+  }
+
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {

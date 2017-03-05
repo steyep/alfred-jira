@@ -93,3 +93,21 @@ ipcMain.on('credentials-saved', (event, response) => {
   process.stderr.write(JSON.stringify(response));
   app.quit();
 });
+
+ipcMain.on('logout', event => {
+  let window = BrowserWindow.fromWebContents(event.sender);
+  dialog.showMessageBox(window, {
+    type: 'warning',
+    message: `This will remove all settings associated with ${app.getName()}`,
+    detail: 'Are you sure you want to continue?',
+    title: app.getName(),
+    icon: icon,
+    buttons: ['OK','Cancel'],
+    cancelId: 1
+  }, res => {
+    if (res === 0) {
+      jira.clearSettings();
+      event.sender.send('close-client', 1);
+    }
+  });
+})
