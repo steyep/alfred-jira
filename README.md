@@ -12,6 +12,10 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * List issues that you are "watching"
   * Returns a list of JIRA issues that you are currently watching
   * Ordered in descending order of when they were last updated
+* Easily filter your issues and the issues you are watching by *any* string in the issue (including `status`, `reporter`, etc).
+  * `jira` followed by the search string will search your assigned & watched issues
+  * The same can be done within the `My Tickets` and `Watched Issues` menus but will limit the search to the menu you are currently on.
+  * Wildcards and Regular Expressions are valid search strings
 * Search JIRA
   * Returns a list of JIRA issues that contain the search string in the **summary**, **description**, or **comments**
   * Allows for advanced searching using JQL
