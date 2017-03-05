@@ -153,21 +153,21 @@ nav {
 .menu li {
   flex: 1;
   display: flex;
-  flex-direction: row-reverse;
-  color: #79a7bf;
+  flex-direction: row;
+  align-items: center;
+  color:#555e63;
   text-transform: uppercase;
   letter-spacing: .09em;
   padding: 10px 0 10px 10px;
 }
 
 .menu li:hover {
+  color: #79a7bf;
   background-color: #2E2E2E;
 }
 
 .menu i {
-  flex: 1 0 20px;
-  color: #fff;
-  max-width: 40px;
+  padding-right: 10px;
 }
 
 .flex-column {
