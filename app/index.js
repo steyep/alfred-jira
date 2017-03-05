@@ -24,6 +24,7 @@ const ValidateOptions = (obj) => {
   })
 }
 
+const loginOnly = remote.getGlobal('login-only');
 const appName = remote.getGlobal('app-name');
 const version = remote.getGlobal('version');
 const icon = remote.getGlobal('icon');
@@ -41,6 +42,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
 
   let data = getData();
 
+  $scope.showLogin = loginOnly;
   $scope.appName = appName;
   $scope.version = version;
   $scope.icon = icon;
@@ -77,11 +79,18 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       let token = new Buffer(user + ':' + pass).toString('base64');
       keychain.save(token);
       delete $scope.loginData.password;
+      if (loginOnly) {
+        ipcRenderer.send('credentials-saved', {
+          url: $scope.data.url,
+          user: user
+        });
+      }
       $scope.showLogin = false;
     }
   }
 
   $scope.cancelLogin = () => {
+    if (loginOnly) ipcRenderer.send('close');
     let data = getData();
     $scope.loginData.user = data.user;
     $scope.loginData.url = data.url;
@@ -96,7 +105,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
   }
 
   // Prompt user to save before closing.
-  let promptUser = 0; // Only ask once.
+  let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {
     if (!angular.equals($scope.data, getData()) && !promptUser++) {
       e.returnValue = true;
