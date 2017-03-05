@@ -14,6 +14,7 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
   * Ordered in descending order of when they were last updated
 * Search JIRA
   * Returns a list of JIRA issues that contain the search string in the **summary**, **description**, or **comments**
+  * Allows for advanced searching using JQL
   * Ordered in descending order by priority and then by issue name.
 * Assign an issue
   * Presents a list of assignable users for a given issue
