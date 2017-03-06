@@ -219,6 +219,7 @@ nav {
   border-radius: 2px;
   flex: 1 0 150px;
 }
+
 .flex-outer li button:last-of-type {
   margin-right: 0;
 }
@@ -324,4 +325,29 @@ input.InputAddOn-field {
 #ck-button input:checked + span {
     background-color: #889aa7;
     color:#fff;
+}
+
+/* Sorting Issues */
+select[id^="sort-"] {
+  flex: 1;
+}
+
+.sort-function {
+  flex: 1;
+  max-width: 40px;
+  text-align: center;
+}
+
+.flex-inner li.sort-selection {
+  flex: 1;
+  display: flex;
+  height: 40px;
+}
+
+.sort-function:hover {
+  color: #4ba8d8
+}
+
+.sort-function .fa-times:hover {
+  color: red;
 }
