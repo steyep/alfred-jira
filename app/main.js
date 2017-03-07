@@ -12,6 +12,7 @@ const appDetails = JSON.parse(package);
 const appName = appDetails.name.replace(/([a-z])([a-z]+)/g, (a,b,c) => b.toUpperCase() + c);
 const version = appDetails.version;
 const loginOnly = process.argv[2] == 'login';
+const update = process.argv[2] == 'update';
 
 global['login-only'] = loginOnly;
 global['app-name'] = appName;
@@ -46,7 +47,27 @@ app.on('ready', function(){
   });
   win.loadURL(`file://${__dirname}/index.html`);
   // win.webContents.openDevTools();
-  win.once('ready-to-show', win.show);
+  win.once('ready-to-show', () => {
+    if (update) {
+      win.focus();
+      dialog.showMessageBox({
+        type: 'question',
+        message: 'Your workflow has been updated!',
+        detail: 'In order for the changes to take effect, you may need to restart Alfred.',
+        title: app.getName(),
+        icon: icon,
+        buttons: ['Restart','Later'],
+        cancelId: 1
+      }, res => {
+        if (res === 0) {
+          process.stdout.write(res.toString());
+        }
+        app.quit();
+      });
+    } else {
+      win.show();
+    }
+  });
 })
 
 app.setName(appName);
