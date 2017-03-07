@@ -116,6 +116,36 @@
             </ul>
           </section>
           
+          <!-- Sorting -->
+          <section id="sorting">
+            <div class="section-title">
+              <h3>Sorting</h3>            
+            </div>
+            <hr>
+            <ul class="flex-inner" ng-repeat="(pos, val) in data.sort">
+              <li class="sort-selection">
+                <select 
+                  name="sort-{{ pos }}" 
+                  id="sort-{{ pos }}" 
+                  ng-model="val.name" 
+                  ng-options="val for val in sortFields(val.name)">
+                </select>
+              </li>
+              <li class="sort-function" ng-click="val.desc=!val.desc">
+                <i ng-show="!val.desc" class="fa fa-lg fa-sort-up"></i>
+                <i ng-show="val.desc" class="fa fa-lg fa-sort-down"></i>
+              </li>
+              <li class="sort-function" ng-click="data.sort.splice(pos, 1)" ng-show="data.sort.length > 1">
+                <i class="fa fa-times fa-lg"></i>
+              </li>
+            </ul>
+            <ul class="flex-outer">
+              <li>
+                 <button type="button" ng-click="data.sort.push({ name: sortFields()[0], desc: true })" ng-show="sortFields().length">Then</button>
+              </li>
+            </ul>
+          </section>
+          
           <!-- Enabled Menu Items -->
           <section id="menu-items">
             <div class="section-title">

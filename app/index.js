@@ -118,6 +118,27 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     $timeout(() => $scope.inProgress[type] = true, 0);
   }
 
+  if (!$scope.data.sort) {
+    $scope.data.sort = config.sort;
+  }
+
+  $scope.sortFields = pos => {
+    return [
+      'Assignee',
+      'Created',
+      'Due Date',
+      'Issue Type',
+      'Key',
+      'Priority',
+      'Reporter',
+      'Resolution',
+      'Status',
+      'Updated'
+    ].filter(ele => {
+      return ele == pos || !$scope.data.sort.map(s => s.name).includes(ele);
+    })
+  };
+
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {

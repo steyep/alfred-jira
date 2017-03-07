@@ -1,12 +1,12 @@
 {
   "name": "alfred-jira",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An Alfred workflow to interact with Jira",
   "main": "./app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "sh ./bin/install.sh",
-    "electron": "./node_modules/.bin/electron . 1>/dev/null"
+    "electron": "./node_modules/.bin/electron ."
   },
   "author": "Stephen Pennell <pennell.stephen@gmail.com> (https://github.com/steyep)",
   "license": "ISC",

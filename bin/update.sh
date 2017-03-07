@@ -1,44 +1,20 @@
 #! /bin/sh
-source "./bin/pashua.sh"
-conf="
-# Set window title
-*.title = Alfred Jira
-
-img.type = image
-img.path = ./resources/icons/restart.png
-img.maxwidth = 50
-
-info.type = text
-info.x = 60
-info.y = 50
-info.text = Your workflow has been updated![return]In order for the changes to take effect, you may need to restart Alfred.
-
-restart.type = defaultbutton
-restart.label = Restart now
-
-cancel.type = cancelbutton
-cancel.label = Later
-"
-
 upstream="$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
 [[ -z "$upstream" ]] && upstream="origin/master"
 
 git reset --hard $upstream && npm install 
 echo "Workflow updated"
+IFS=$'\n'
+restart="$(npm run -s electron update)"
+[[ ! "$restart" ]] && exit 0;
 
-result="$(pashua_run "$conf")"
-
-# Parse result
-for line in $result
-do
-    name=$(echo $line | sed 's/^\([^=]*\)=.*$/\1/')
-    value=$(echo $line | sed 's/^[^=]*=\(.*\)$/\1/')
-    eval $name='$value'
+alfred=()
+pids=()
+for process in $(ps ax -o pid,comm | grep Alfred | grep -v grep); do
+  app=${process#* }
+  pid=${process%% *}
+  pids+=($pid)
+  alfred+=(${app/.app*/.app})
 done
-
-if [[ "$restart" == "1" ]]; then
-  alfred_pid=$(ps -o ppid= $PPID)
-  app=$(ps -p $alfred_pid -o comm=)
-  ( kill -9 $alfred_pid && open "${app/.app*/.app}" ) &
-fi
+( kill -9 ${pids[@]} && open $alfred ) &
 exit 0
