@@ -34,6 +34,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F5815617-3675-4C39-8149-A8F379F43747</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Stephen Pennell</string>
@@ -91,27 +104,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Alfred-Jira</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -131,6 +123,44 @@
 			<string>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>F5815617-3675-4C39-8149-A8F379F43747</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Alfred-Jira</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -157,6 +187,13 @@
 			<integer>700</integer>
 			<key>ypos</key>
 			<real>10</real>
+		</dict>
+		<key>F5815617-3675-4C39-8149-A8F379F43747</key>
+		<dict>
+			<key>xpos</key>
+			<integer>900</integer>
+			<key>ypos</key>
+			<integer>10</integer>
 		</dict>
 	</dict>
 	<key>webaddress</key>
