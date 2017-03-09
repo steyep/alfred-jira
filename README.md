@@ -5,6 +5,7 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * [Install Node.js](https://nodejs.org/en/download/package-manager/) (`>=6.0.0`).
 * Clone/fork this repo
 * Run the build script `npm run build`
+* Run `node lib/action.js login` (can be done via alfred but in case there are problems)
 
 ## Features
 * List issues assigned to you
