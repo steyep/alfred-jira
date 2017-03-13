@@ -156,6 +156,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
   if (!$scope.data.bookmarks) {
     $scope.data.bookmarks = config.bookmarks;
   }
+  // Default to 15 minute cache time.
+  const bookmarkDefault = { cache: 900000 };
 
   $scope.editBookmark = bookmark => {
     $scope.bookmarkInEdit = true;
@@ -164,15 +166,19 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
   }
 
   $scope.addBookmark = bookmark => {
-    $scope.data.bookmarks.push(bookmark);
-    $scope.selectedBookmark = null;
+    if (bookmark) {
+      $scope.data.bookmarks.push(bookmark);
+    }
+    $scope.selectedBookmark = bookmarkDefault;
+    $scope.bookmarkInEdit = false;
   }
 
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
-  $scope.$watch("selectedBookmark.cache", function(val) {
-    $scope.cacheConversion = getTime(val);
-  });
+  $scope.selectedBookmark = $scope.selectedBookmark || bookmarkDefault;
+
+  $scope.$watch("selectedBookmark.cache",
+    val => $scope.cacheConversion = getTime(val));
 
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.

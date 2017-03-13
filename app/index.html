@@ -133,7 +133,7 @@
               <li>
                 <label for="bookmarkQuery">
                   Query
-                <p class="help"><a href="https://docs.atlassian.com/jira/jsw-docs-070/Advanced+searching" target="_blank">Syntax Help</a></p>
+                <p class="help"><a href="https://docs.atlassian.com/jira/jsw-docs-070/Advanced+searching" target="_blank"><i class="fa fa-question-circle"></i> Syntax Help</a></p>
                 </label>
                 <input type="text" name="bookmarkQuery" ng-model="selectedBookmark.query">
               </li>
@@ -147,7 +147,7 @@
               <li>
                 <button ng-show="bookmarkInEdit"
                   type="button" 
-                  ng-click="bookmarkInEdit = false; selectedBookmark = null" 
+                  ng-click="addBookmark()" 
                   ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
                   OK
                   </button>
