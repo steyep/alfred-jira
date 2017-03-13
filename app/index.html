@@ -116,6 +116,64 @@
             </ul>
           </section>
           
+          <!-- Bookmarks -->
+          <section id="Bookmarks">
+            <div class="section-title">
+              <h3>Bookmarks</h3>            
+            </div>
+            <hr>
+            <p>
+              <b>Bookmarks</b> are saved <a href="https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html" target="_blank">JQL</a> queries that display as soon as you type <code>jira</code> into Alfred. You can edit the default queries or create custom ones to better fit your needs. 
+            </p>
+            <ul class="flex-outer">
+              <li>
+                <label for="bookmarkName">Name</label>
+                <input type="text" name="bookmarkName" ng-model="selectedBookmark.name">
+              </li>
+              <li>
+                <label for="bookmarkQuery">
+                  Query
+                <p class="help"><a href="https://docs.atlassian.com/jira/jsw-docs-070/Advanced+searching" target="_blank">Syntax Help</a></p>
+                </label>
+                <input type="text" name="bookmarkQuery" ng-model="selectedBookmark.query">
+              </li>
+              <li>
+                <label for="bookmarkCacheLimit">
+                  Cache Limit (in milliseconds)
+                  <p class="help" ng-bind="cacheConversion"></p>
+                </label>
+                <input name="bookmarkCacheLimit" type="number" step="60000" min="0" ng-model="selectedBookmark.cache"/>
+              </li>
+              <li>
+                <button ng-show="bookmarkInEdit"
+                  type="button" 
+                  ng-click="bookmarkInEdit = false; selectedBookmark = null" 
+                  ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
+                  OK
+                  </button>
+                  <button ng-show="!bookmarkInEdit"
+                  type="button" 
+                  ng-click="addBookmark(selectedBookmark)" 
+                  ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
+                  Add
+                  </button>
+              </li>
+            </ul>
+            <div class="table-container" ng-show="!bookmarkInEdit">
+              <div class="table-row" ng-repeat="bookmark in data.bookmarks">
+                <div class="table-column">
+                  {{ bookmark.name }}
+                </div>
+                <div class="table-column" ng-click="editBookmark(bookmark)">
+                  <i class="fa fa-pencil fa-lg"></i>
+                </div>
+                <div class="table-column" ng-click="deleteBookmark($index)">
+                  <i class="fa fa-times fa-lg"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- Sorting -->
           <section id="sorting">
             <div class="section-title">

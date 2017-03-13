@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
+const sh = require('child_process');
 const jira = require('../lib/jira');
 const config = require('../lib/jira/config');
 const Extras = require('../lib/jira/grab-images');
@@ -47,6 +48,15 @@ app.on('ready', function(){
   });
   win.loadURL(`file://${__dirname}/index.html`);
   // win.webContents.openDevTools();
+  
+  // Open links in browser (not Electron)
+  win.webContents.on('new-window', (event, requestedURL) => {
+    event.preventDefault();
+    sh.exec('open ' + requestedURL, err => {
+      if (err) throw err;
+    });
+  })
+
   win.once('ready-to-show', () => {
     if (update) {
       win.focus();

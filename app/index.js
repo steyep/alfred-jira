@@ -139,6 +139,41 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     })
   };
 
+  const getTime = mil => {
+    s = mil/1000;
+    m = s/60;
+    h = m/60;
+    d = h/24;
+    return [d,h,m,s].map((time, index) => {
+      time = Math.floor(time);
+      if (index) {
+        time %= index === 1 ? 24 : 60;
+      }
+      return time ? time + ' ' + ['days','hours','minutes','seconds'][index] : 0;
+    }).filter(Boolean).join(' ');
+  }
+
+  if (!$scope.data.bookmarks) {
+    $scope.data.bookmarks = config.bookmarks;
+  }
+
+  $scope.editBookmark = bookmark => {
+    $scope.bookmarkInEdit = true;
+    $scope.selectedBookmark = bookmark;
+    $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
+  }
+
+  $scope.addBookmark = bookmark => {
+    $scope.data.bookmarks.push(bookmark);
+    $scope.selectedBookmark = null;
+  }
+
+  $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
+
+  $scope.$watch("selectedBookmark.cache", function(val) {
+    $scope.cacheConversion = getTime(val);
+  });
+
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {
