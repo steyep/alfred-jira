@@ -135,7 +135,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       'Status',
       'Updated'
     ].filter(ele => {
-      return ele == pos || !$scope.data.sort.map(s => s.name).includes(ele);
+      return ele == pos || !$scope.selectedBookmark.sort.map(s => s.name).includes(ele);
     })
   };
 
@@ -158,14 +158,23 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
   }
   // Default to 15 minute cache time.
   class bookmarkDefault {
-    constructor() {
-      this.cache = 900000;
+    constructor(obj) {
+      obj = obj || {};
+      this.name = obj.name || null;
+      this.query = obj.query || null;
+      this.cache = obj.cache || 900000;
+      this.sort = obj.sort || [{ name: 'Updated', desc: true }];
+      this.limitStatuses = obj.limitStatuses === undefined ? true : obj.limitStatuses;
+      this.limitProjects = obj.limitProjects === undefined ? true : obj.limitProjects;;
     }
   }  
 
   $scope.editBookmark = bookmark => {
     $scope.bookmarkInEdit = true;
-    $scope.selectedBookmark = bookmark;
+    if (!bookmark.sort) {
+      bookmark.sort = Object.create(config.sort);
+    }
+    $scope.selectedBookmark = new bookmarkDefault(bookmark);
     $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
   }
 

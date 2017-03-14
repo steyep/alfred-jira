@@ -30,6 +30,9 @@ ul {
 li {
   list-style-type: none;
 }
+button {
+  outline: none;
+}
 
 code {
   background: #e4e4e4;
@@ -206,6 +209,7 @@ nav {
   align-items: center;
 }
 
+.sort-label,
 .flex-outer > li > label {
   margin-right: 20px;
 }
@@ -219,6 +223,7 @@ nav {
   min-width: 120px;
 }
 
+.sort-wrapper > li:not(:last-child),
 .flex-outer > li:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -345,25 +350,31 @@ input.InputAddOn-field {
 /* Sorting Issues */
 select[id^="sort-"] {
   flex: 1;
+  align-self: stretch;
 }
 
 .sort-function {
   flex: 1;
   max-width: 40px;
-  text-align: center;
+  justify-content: center;
 }
 
-.flex-inner li.sort-selection {
+li.sort-selection {
   flex: 1;
   display: flex;
   height: 40px;
 }
 
-.sort-function:hover {
-  color: #4ba8d8
+.sort-list:not(:last-of-type) {
+  margin-bottom: 20px;
 }
 
-.sort-function .fa-times:hover {
+.glow:hover {
+  color: #4ba8d8;
+  cursor: default;
+}
+
+.remove:hover {
   color: red;
 }
 
@@ -397,3 +408,45 @@ select[id^="sort-"] {
   color: #ccc;
   margin: 0;
 }
+
+.sort-label {
+  align-self: flex-start;
+}
+
+.flex-outer.sort-wrapper {
+  flex: 1;
+}
+.sort-wrapper ul.flex-outer button {
+  background: #889aa7;
+  border-radius: 5px;
+  max-width: 300px;
+}
+.sort-wrapper ul.flex-outer button:hover {
+  background: #4ba8d8;
+}
+.bookmark-form {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.center-separator {
+  display: flex;
+}
+.center-separator, 
+.center-separator > i {
+  line-height: 2.8rem;
+}
+.center-separator:after,
+.center-separator:before {
+  content: '';
+  flex: 1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 48.5%, #d6d6d6 48.5%, #ffffff 51.5%, rgba(255, 255, 255, 0) 51.5%)
+}
+.center-separator:after {
+  margin-left: 10px;
+}
+.center-separator:before {
+  margin-right: 10px;
+}
+
+
