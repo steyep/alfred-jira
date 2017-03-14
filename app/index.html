@@ -148,18 +148,20 @@
                 <button ng-show="bookmarkInEdit"
                   type="button" 
                   ng-click="addBookmark()" 
+                  ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
                   ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
                   OK
                   </button>
                   <button ng-show="!bookmarkInEdit"
                   type="button" 
                   ng-click="addBookmark(selectedBookmark)" 
+                  ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
                   ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
                   Add
                   </button>
               </li>
             </ul>
-            <div class="table-container" ng-show="!bookmarkInEdit">
+            <div class="table-container">
               <div class="table-row" ng-repeat="bookmark in data.bookmarks">
                 <div class="table-column">
                   {{ bookmark.name }}

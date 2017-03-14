@@ -157,7 +157,11 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     $scope.data.bookmarks = config.bookmarks;
   }
   // Default to 15 minute cache time.
-  const bookmarkDefault = { cache: 900000 };
+  class bookmarkDefault {
+    constructor() {
+      this.cache = 900000;
+    }
+  }  
 
   $scope.editBookmark = bookmark => {
     $scope.bookmarkInEdit = true;
@@ -169,13 +173,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     if (bookmark) {
       $scope.data.bookmarks.push(bookmark);
     }
-    $scope.selectedBookmark = bookmarkDefault;
+    $scope.selectedBookmark = new bookmarkDefault();
     $scope.bookmarkInEdit = false;
   }
 
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
-  $scope.selectedBookmark = $scope.selectedBookmark || bookmarkDefault;
+  $scope.selectedBookmark = $scope.selectedBookmark || new bookmarkDefault();
 
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
