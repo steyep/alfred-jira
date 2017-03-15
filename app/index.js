@@ -118,10 +118,6 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     $timeout(() => $scope.inProgress[type] = true, 0);
   }
 
-  if (!$scope.data.sort) {
-    $scope.data.sort = config.sort;
-  }
-
   $scope.sortFields = pos => {
     return [
       'Assignee',
@@ -156,6 +152,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
   if (!$scope.data.bookmarks) {
     $scope.data.bookmarks = config.bookmarks;
   }
+
   // Default to 15 minute cache time.
   class bookmarkDefault {
     constructor(obj) {
@@ -164,24 +161,26 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       this.query = obj.query || null;
       this.cache = obj.cache || 900000;
       this.sort = obj.sort || [{ name: 'Updated', desc: true }];
-      this.limitStatuses = obj.limitStatuses === undefined ? true : obj.limitStatuses;
-      this.limitProjects = obj.limitProjects === undefined ? true : obj.limitProjects;;
+      this.limitStatuses = obj.limitStatuses !== false;
+      this.limitProjects = obj.limitProjects !== false;
     }
   }  
 
-  $scope.editBookmark = bookmark => {
+  $scope.editBookmark = (bookmark, index) => {
     $scope.bookmarkInEdit = true;
-    if (!bookmark.sort) {
-      bookmark.sort = Object.create(config.sort);
-    }
+    $scope.selectedBookmarkIndex = index;
     $scope.selectedBookmark = new bookmarkDefault(bookmark);
     $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
   }
 
   $scope.addBookmark = bookmark => {
-    if (bookmark) {
+    if ($scope.selectedBookmarkIndex !== undefined) {
+      $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
+      delete $scope.selectedBookmarkIndex;
+    } else {
       $scope.data.bookmarks.push(bookmark);
     }
+    $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
     $scope.selectedBookmark = new bookmarkDefault();
     $scope.bookmarkInEdit = false;
   }
@@ -192,6 +191,9 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
 
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
+
+  $scope.$watch("selectedBookmark.query",
+    val => $scope.selectedBookmark.hideSort = /order.+by/i.test(val));
 
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.

@@ -139,8 +139,8 @@
                   <input type="text" name="bookmarkQuery" ng-model="selectedBookmark.query">
                 </li>
               </ul>
-              <ul class="flex-inner">
-                <div class="sort-label">Sort by</div>
+              <ul class="flex-inner" ng-hide="selectedBookmark.hideSort">
+                <div class="sort-label">Order by</div>
                   <div class="flex-outer sort-wrapper">
                     <ul class="flex-inner sort-list" ng-repeat="(pos, val) in selectedBookmark.sort">
                       <li class="sort-selection">
@@ -161,7 +161,7 @@
                     </ul>
                     <div class="center-separator">
                       <div class="glow" ng-click="selectedBookmark.sort.push({ name: sortFields()[0], desc: true })" ng-show="sortFields().length">
-                        <i class="fa fa-plus-circle"></i>&nbsp;Add another sort field
+                        <i class="fa fa-plus-circle"></i>&nbsp;Add another order field
                       </div>
                     </div>
                   </div>
@@ -183,20 +183,13 @@
                   <label for="limitStatuses">Limit query to <a href="#statuses">enabled statuses</a></label>
                 </li>
                 <li>
-                  <button ng-show="bookmarkInEdit"
-                    type="button" 
-                    ng-click="addBookmark()" 
-                    ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
-                    ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
-                    OK
-                    </button>
-                    <button ng-show="!bookmarkInEdit"
+                  <button
                     type="button" 
                     ng-click="addBookmark(selectedBookmark)" 
                     ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
                     ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
-                    Add
-                    </button>
+                    {{ bookmarkInEdit ? 'OK' : 'Add' }}
+                  </button>
                 </li>
               </ul>
             </div>
@@ -206,7 +199,7 @@
                 <div class="table-column">
                   {{ bookmark.name }}
                 </div>
-                <div class="table-column glow" ng-click="editBookmark(bookmark)">
+                <div class="table-column glow" ng-click="editBookmark(bookmark, $index)">
                   <i class="fa fa-pencil fa-lg"></i>
                 </div>
                 <div class="table-column remove" ng-click="deleteBookmark($index)">
