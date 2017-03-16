@@ -61,3 +61,4 @@ tags
 *.bak
 
 node_modules    
+resources/*_icons
