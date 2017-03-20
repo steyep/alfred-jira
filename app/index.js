@@ -31,7 +31,7 @@ const icon = remote.getGlobal('icon');
 
 let app = angular.module('alfred-jira', []);
 
-app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $element) => {
+app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorScroll', ($scope, $timeout, $element, $location, $anchorScroll) => {
   
   // Cancel login when esc is pressed.
   $element.bind("keydown keypress", function (event) {
@@ -153,6 +153,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     $scope.data.bookmarks = config.bookmarks;
   }
 
+  const defaultBookmarkIcon = '../resources/icons/bookmark.png';
   // Default to 15 minute cache time.
   class bookmarkDefault {
     constructor(obj) {
@@ -163,14 +164,32 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       this.sort = obj.sort || [{ name: 'Updated', desc: true }];
       this.limitStatuses = obj.limitStatuses !== false;
       this.limitProjects = obj.limitProjects !== false;
+      this.icon = obj.icon || defaultBookmarkIcon;
     }
   }  
+
+  $scope.getBookmarkIcon = index => {
+    if (index === undefined) {
+      index = $scope.data.bookmarks.length;
+    }
+    ipcRenderer.send('get-bookmark-icon', index);
+  }
+  
+  $scope.bookmarkIcon = fileName => {
+    // let icon = config.cfgPath + 'bookmark-' + index + '.png';
+    if (fs.existsSync(fileName)) {
+      return fileName;
+    }
+    return defaultBookmarkIcon;
+  }
 
   $scope.editBookmark = (bookmark, index) => {
     $scope.bookmarkInEdit = true;
     $scope.selectedBookmarkIndex = index;
     $scope.selectedBookmark = new bookmarkDefault(bookmark);
     $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
+    $location.hash('bookmark-form');
+    $anchorScroll();
   }
 
   $scope.addBookmark = bookmark => {
@@ -196,7 +215,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     val => $scope.selectedBookmark.hideSort = /order.+by/i.test(val));
 
   // Prompt user to save before closing.
-  let promptUser = loginOnly; // Only ask once.
+  let promptUser = 1//loginOnly; // Only ask once.
   window.onbeforeunload = e => {
     if (!angular.equals($scope.data, getData()) && !promptUser++) {
       e.returnValue = true;
@@ -230,5 +249,10 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       body: `Finished downloading icons: ${type}`,
       icon: icon
     });
+  });
+
+  ipcRenderer.on('set-bookmark-icon', (channel, index, fileName) => {
+    console.log(fileName);
+    $timeout(() => $scope.selectedBookmark.icon = fileName, 0);
   })
 }]);

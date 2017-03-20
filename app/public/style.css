@@ -49,12 +49,15 @@ a:hover {
   color: #4ba8d8;
 }
 
-li > input, select, textarea {
-  outline: none;
-  padding: 10px;
+li > input, select, textarea, .bookmark-icon-button {
   background-color: #E8E8E8;
   border: #CDCDCD solid 1px;
   border-radius: 4px;
+}
+
+li > input, select, textarea {
+  outline: none;
+  padding: 10px;
   font-size: 15px;
 }
 
@@ -63,7 +66,8 @@ li > input:focus,
 textarea:hover,
 textarea:focus,
 select:hover,
-select:focus {
+select:focus,
+.bookmark-icon-button:hover {
   border: #4ba8d8 1px solid;
 }
 
@@ -388,19 +392,21 @@ li.sort-selection {
 
 .table-row {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 }
 .table-row:nth-child(odd) {
   background-color: #e8e8e8;
 }
 
 .table-column {
-  flex: 1;
-  margin: 10px;
-}
-.table-column:not(:first-child) {
   flex: 1 0 40px;
   max-width: 20px;
+  margin: 10px;
+}
+
+.bookmark-title {
+  flex: 1;
+  margin: 10px;
 }
 
 .help {
@@ -449,4 +455,10 @@ li.sort-selection {
   margin-right: 10px;
 }
 
+.bookmark-icon {
+  max-width: 38px;
+}
+.bookmark-icon-button {
+  margin-left: 10px;
+}
 

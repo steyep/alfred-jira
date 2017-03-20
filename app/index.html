@@ -125,11 +125,12 @@
             <p>
               <b>Bookmarks</b> are saved <a href="https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html" target="_blank">JQL</a> queries that display as soon as you type <code>jira</code> into Alfred. You can edit the default queries or create custom ones to better fit your needs. 
             </p>
-            <div class="bookmark-form">
+            <div class="bookmark-form" id="bookmark-form">
               <ul class="flex-outer">
                 <li>
                   <label for="bookmarkName">Name</label>
                   <input type="text" name="bookmarkName" ng-model="selectedBookmark.name">
+                  <img src="{{ bookmarkIcon(selectedBookmark.icon) }}" class="bookmark-icon bookmark-icon-button" ng-click="getBookmarkIcon(selectedBookmarkIndex)">
                 </li>
                 <li>
                   <label for="bookmarkQuery">
@@ -195,8 +196,11 @@
             </div>
             <hr>
             <div class="table-container">
-              <div class="table-row" ng-repeat="bookmark in data.bookmarks">
+              <div class="table-row" ng-repeat="bookmark in data.bookmarks track by $index">
                 <div class="table-column">
+                  <img src="{{ bookmarkIcon(bookmark.icon) }}" class="bookmark-icon">
+                </div>
+                <div class="bookmark-title">
                   {{ bookmark.name }}
                 </div>
                 <div class="table-column glow" ng-click="editBookmark(bookmark, $index)">
