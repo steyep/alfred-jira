@@ -134,6 +134,9 @@
                     ng-src="{{ bookmarkIcon(selectedIcon) }}"
                     class="bookmark-icon bookmark-icon-button" 
                     ng-click="getBookmarkIcon(selectedBookmarkIndex)"/>
+                    <div class="table-column remove" ng-show="selectedIcon" ng-click="selectedIcon = null">
+                      <i class="fa fa-times fa-lg"></i>                    
+                    </div>
                 </li>
                 <li>
                   <label for="bookmarkQuery">

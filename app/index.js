@@ -104,7 +104,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       $scope.data.bookmarks = $scope.data.bookmarks
         .map((bookmark, index) => {
           let dest = config.cfgPath + 'bookmark-' + index + '.png';
-          if (bookmark.icon != dest) {
+          if (bookmark.icon && bookmark.icon != dest) {
             fs.renameSync(bookmark.icon, dest);
             bookmark.icon = dest;
           }
@@ -174,7 +174,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       this.sort = obj.sort || [{ name: 'Updated', desc: true }];
       this.limitStatuses = obj.limitStatuses !== false;
       this.limitProjects = obj.limitProjects !== false;
-      this.icon = obj.icon || $scope.bookmarkIcon();
+      this.icon = obj.icon || null;
     }
   }  
 

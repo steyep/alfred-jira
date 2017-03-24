@@ -87,7 +87,7 @@ app.on('ready', function(){
 
   app.on('before-quit', () => {
     // Clean up after ourselves. 
-    sh.execSync(`rm "${path.join(tmp.dir, tmp.prefix)}*png"`);
+    sh.execSync(`rm ${path.join(tmp.dir, tmp.prefix)}*png`);
   });
 })
 
