@@ -130,7 +130,10 @@
                 <li>
                   <label for="bookmarkName">Name</label>
                   <input type="text" name="bookmarkName" ng-model="selectedBookmark.name">
-                  <img src="{{ bookmarkIcon(selectedBookmark.icon) }}" class="bookmark-icon bookmark-icon-button" ng-click="getBookmarkIcon(selectedBookmarkIndex)">
+                  <img 
+                    ng-src="{{ bookmarkIcon(selectedIcon) }}"
+                    class="bookmark-icon bookmark-icon-button" 
+                    ng-click="getBookmarkIcon(selectedBookmarkIndex)"/>
                 </li>
                 <li>
                   <label for="bookmarkQuery">
@@ -198,7 +201,7 @@
             <div class="table-container">
               <div class="table-row" ng-repeat="bookmark in data.bookmarks track by $index">
                 <div class="table-column">
-                  <img src="{{ bookmarkIcon(bookmark.icon) }}" class="bookmark-icon">
+                  <img ng-src="{{ bookmarkIcon(bookmark.icon) }}" class="bookmark-icon">
                 </div>
                 <div class="bookmark-title">
                   {{ bookmark.name }}

@@ -100,6 +100,17 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.save = () => {
     $scope.data.url = $scope.data.url.replace(/(.)\/*$/, '$1/');
+    if ($scope.data.bookmarks) {
+      $scope.data.bookmarks = $scope.data.bookmarks
+        .map((bookmark, index) => {
+          let dest = config.cfgPath + 'bookmark-' + index + '.png';
+          if (bookmark.icon != dest) {
+            fs.renameSync(bookmark.icon, dest);
+            bookmark.icon = dest;
+          }
+          return bookmark;
+        });
+    }
     fs.writeFileSync(cfgFile, JSON.stringify($scope.data, null, 2));
     ipcRenderer.send('close');
   }
@@ -154,7 +165,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   }
 
   // Default to 15 minute cache time.
-  class bookmarkDefault {
+  class Bookmark {
     constructor(obj) {
       obj = obj || {};
       this.name = obj.name || null;
@@ -175,8 +186,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   }
   
   $scope.bookmarkIcon = fileName => {
-    if (fs.existsSync(fileName)) {
-      return fileName;
+    if (fileName && fs.existsSync(fileName)) {
+      return fileName + '?t=' + new Date().getTime();
     }
     return '../resources/icons/bookmark.png';
   }
@@ -184,27 +195,31 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   $scope.editBookmark = (bookmark, index) => {
     $scope.bookmarkInEdit = true;
     $scope.selectedBookmarkIndex = index;
-    $scope.selectedBookmark = new bookmarkDefault(bookmark);
+    $scope.selectedBookmark = new Bookmark(bookmark);
+    $scope.selectedIcon = $scope.selectedBookmark.icon
     $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
     $location.hash('bookmark-form');
     $anchorScroll();
   }
 
   $scope.addBookmark = bookmark => {
+    if ($scope.selectedIcon != bookmark.icon) {
+      bookmark.icon = $scope.selectedIcon;
+    }
     if ($scope.selectedBookmarkIndex !== undefined) {
       $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
       delete $scope.selectedBookmarkIndex;
     } else {
       $scope.data.bookmarks.push(bookmark);
     }
-    $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
-    $scope.selectedBookmark = new bookmarkDefault();
+    delete $scope.selectedIcon;
+    $scope.selectedBookmark = new Bookmark();
     $scope.bookmarkInEdit = false;
   }
 
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
-  $scope.selectedBookmark = $scope.selectedBookmark || new bookmarkDefault();
+  $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
 
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
@@ -249,7 +264,9 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     });
   });
 
-  ipcRenderer.on('set-bookmark-icon', (channel, index, fileName) => {
-    $timeout(() => $scope.selectedBookmark.icon = fileName, 0);
+  ipcRenderer.on('set-bookmark-icon', (channel, fileName) => {
+    $timeout(() => {
+      $scope.selectedIcon = fileName;
+    }, 0);
   })
 }]);

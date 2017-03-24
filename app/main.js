@@ -15,6 +15,10 @@ const appName = appDetails.name.replace(/([a-z])([a-z]+)/g, (a,b,c) => b.toUpper
 const version = appDetails.version;
 const loginOnly = process.argv[2] == 'login';
 const update = process.argv[2] == 'update';
+const tmp = {
+  dir: process.env.TMPDIR || config.cfgPath,
+  prefix: 'bookmark',
+};
 
 global['login-only'] = loginOnly;
 global['app-name'] = appName;
@@ -79,6 +83,11 @@ app.on('ready', function(){
     } else {
       win.show();
     }
+  });
+
+  app.on('before-quit', () => {
+    // Clean up after ourselves. 
+    sh.execSync(`rm "${path.join(tmp.dir, tmp.prefix)}*png"`);
   });
 })
 
@@ -168,17 +177,18 @@ ipcMain.on('get-bookmark-icon', (event, index) => {
   dialog.showOpenDialog(window, {
     title: app.getName(),
     properties: ['openFile'],
-    filters: [{ name: 'PNG Images', extensions: ['png'] }]
+    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
   }, res => {
     if (res) {
       res = res[0];
       let parsedPath = path.parse(res);
-      let dest = path.join(config.cfgPath, parsedPath.base);
-      sh.exec(`qlmanage -t -s 48 -o ${config.cfgPath} ${res} 1>&2
-      test -f ${dest}.png && mv ${dest}.png ${config.cfgPath}bookmark-${index}.png`, 
-    err => {
+      let dest = path.join(tmp.dir, parsedPath.base);
+      let tmpFile = path.join(tmp.dir + tmp.prefix) + new Date().getTime() + '.png';
+      sh.exec(`qlmanage -t -s 48 -o "${tmp.dir}" "${res}" 1>&2
+        test -f "${dest}.png" && mv "${dest}.png" "${tmpFile}"`,
+      err => {
         if (err) throw err;
-        event.sender.send('set-bookmark-icon', index, config.cfgPath + `bookmark-${index}.png`);
+        event.sender.send('set-bookmark-icon', tmpFile);
       })
     }
   })
