@@ -153,7 +153,6 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $scope.data.bookmarks = config.bookmarks;
   }
 
-  const defaultBookmarkIcon = '../resources/icons/bookmark.png';
   // Default to 15 minute cache time.
   class bookmarkDefault {
     constructor(obj) {
@@ -164,7 +163,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       this.sort = obj.sort || [{ name: 'Updated', desc: true }];
       this.limitStatuses = obj.limitStatuses !== false;
       this.limitProjects = obj.limitProjects !== false;
-      this.icon = obj.icon || defaultBookmarkIcon;
+      this.icon = obj.icon || $scope.bookmarkIcon();
     }
   }  
 
@@ -176,11 +175,10 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   }
   
   $scope.bookmarkIcon = fileName => {
-    // let icon = config.cfgPath + 'bookmark-' + index + '.png';
     if (fs.existsSync(fileName)) {
       return fileName;
     }
-    return defaultBookmarkIcon;
+    return '../resources/icons/bookmark.png';
   }
 
   $scope.editBookmark = (bookmark, index) => {
@@ -215,7 +213,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     val => $scope.selectedBookmark.hideSort = /order.+by/i.test(val));
 
   // Prompt user to save before closing.
-  let promptUser = 1//loginOnly; // Only ask once.
+  let promptUser = loginOnly; // Only ask once.
   window.onbeforeunload = e => {
     if (!angular.equals($scope.data, getData()) && !promptUser++) {
       e.returnValue = true;
@@ -252,7 +250,6 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   });
 
   ipcRenderer.on('set-bookmark-icon', (channel, index, fileName) => {
-    console.log(fileName);
     $timeout(() => $scope.selectedBookmark.icon = fileName, 0);
   })
 }]);
