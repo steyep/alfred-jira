@@ -104,7 +104,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       $scope.data.bookmarks = $scope.data.bookmarks
         .map((bookmark, index) => {
           let dest = config.cfgPath + 'bookmark-' + index + '.png';
-          if (bookmark.icon && bookmark.icon != dest) {
+          if (bookmark.icon && bookmark.icon != dest && !/resources/.test(bookmark.icon)) {
             fs.renameSync(bookmark.icon, dest);
             bookmark.icon = dest;
           }
