@@ -133,8 +133,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     return [
       'Assignee',
       'Created',
-      'Due Date',
-      'Issue Type',
+      'DueDate',
+      'IssueType',
       'Key',
       'Priority',
       'Reporter',
