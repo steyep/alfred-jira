@@ -197,6 +197,16 @@
                     ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
                     {{ bookmarkInEdit ? 'OK' : 'Add' }}
                   </button>
+                  <button
+                    type="button" 
+                    ng-click="testBookmark(selectedBookmark)" 
+                    ng-disabled="!selectedBookmark.query || inProgress.testConfig"
+                    ng-class="{ 'disabled': !selectedBookmark.query || inProgress.testConfig, 'success': testSuccessful }"
+                    >
+                    <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.testConfig"></i>
+                    <i class="fa fa-lg fa-check-circle" ng-show="testSuccessful"></i>
+                    Test Config
+                  </button>
                 </li>
               </ul>
             </div>

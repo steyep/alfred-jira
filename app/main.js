@@ -87,7 +87,7 @@ app.on('ready', function(){
 
   app.on('before-quit', () => {
     // Clean up after ourselves. 
-    sh.execSync(`rm ${path.join(tmp.dir, tmp.prefix)}*png`);
+    sh.execSync(`find ${tmp.dir} -maxdepth 1 -type f -name '${tmp.prefix}*png' -delete`);
   });
 })
 
@@ -182,8 +182,8 @@ ipcMain.on('get-bookmark-icon', (event, index) => {
     if (res) {
       res = res[0];
       let parsedPath = path.parse(res);
-      let dest = path.join(tmp.dir, parsedPath.base);
-      let tmpFile = path.join(tmp.dir + tmp.prefix) + new Date().getTime() + '.png';
+      let dest = path.normalize(path.join(tmp.dir, parsedPath.base));
+      let tmpFile = path.normalize(path.join(tmp.dir + tmp.prefix)) + new Date().getTime() + '.png';
       sh.exec(`qlmanage -t -s 48 -o "${tmp.dir}" "${res}" 1>&2
         test -f "${dest}.png" && mv "${dest}.png" "${tmpFile}"`,
       err => {
@@ -192,4 +192,10 @@ ipcMain.on('get-bookmark-icon', (event, index) => {
       })
     }
   })
+});
+
+ipcMain.on('test-bookmark', (event, bookmark) => {
+  jira.testBookmark(bookmark)
+    .then(() => event.sender.send('bookmark-validation', true))
+    .catch(err => event.sender.send('bookmark-validation', err));
 });

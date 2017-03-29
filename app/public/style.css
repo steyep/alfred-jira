@@ -461,4 +461,7 @@ li.sort-selection {
 .bookmark-icon-button {
   margin-left: 10px;
 }
+.success {
+  background: #65bb65 !important;
+}
 

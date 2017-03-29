@@ -187,7 +187,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   
   $scope.bookmarkIcon = fileName => {
     if (fileName && fs.existsSync(fileName)) {
-      return fileName + '?t=' + new Date().getTime();
+      return fileName;
     }
     return '../resources/icons/bookmark.png';
   }
@@ -219,13 +219,21 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
+  $scope.testBookmark = bookmark => {
+    $scope.inProgress.testConfig = true;
+    $scope.testSuccessful = false;
+    ipcRenderer.send('test-bookmark', bookmark);
+  }
+
   $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
 
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
 
-  $scope.$watch("selectedBookmark.query",
-    val => $scope.selectedBookmark.hideSort = /order.+by/i.test(val));
+  $scope.$watch("selectedBookmark.query", val => { 
+      $scope.testSuccessful = false;
+      $scope.selectedBookmark.hideSort = /order.+by/i.test(val)
+  });
 
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
@@ -268,5 +276,14 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $timeout(() => {
       $scope.selectedIcon = fileName;
     }, 0);
-  })
+  });
+
+  ipcRenderer.on('bookmark-validation', (channel, result) => {
+    $timeout(() => {
+      $scope.inProgress.testConfig = false;
+      $scope.testSuccessful = result === true;
+      if (!$scope.testSuccessful) 
+        alert(`Bookmark Config Invalid:\n\n${result}`);
+    }, 0);
+  });
 }]);
