@@ -65,31 +65,12 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>8EB4D1DF-1C75-4EBD-A15C-F355B43B0B57</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>39</integer>
-				<key>script</key>
-				<string>/usr/local/bin/node ./lib/action.js {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -115,6 +96,25 @@
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>94C00EEF-2B8E-45D8-97AE-E8C175634DB1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>39</integer>
+				<key>script</key>
+				<string>/usr/local/bin/node ./lib/action.js {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7D4D4235-7FE2-4F9B-939A-DF9CC1AD2F56</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
