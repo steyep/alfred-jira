@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
 html, body {
   height: 100%;
@@ -30,13 +30,34 @@ ul {
 li {
   list-style-type: none;
 }
+button {
+  outline: none;
+}
+
+code {
+  background: #e4e4e4;
+  padding: 4px;
+  color: #1d89ff;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 700;
+  color: #889aa7;
+}
+a:hover {
+  color: #4ba8d8;
+}
+
+li > input, select, textarea, .bookmark-icon-button {
+  background-color: #E8E8E8;
+  border: #CDCDCD solid 1px;
+  border-radius: 4px;
+}
 
 li > input, select, textarea {
   outline: none;
   padding: 10px;
-  background-color: #E8E8E8;
-  border: #CDCDCD solid 1px;
-  border-radius: 4px;
   font-size: 15px;
 }
 
@@ -45,7 +66,8 @@ li > input:focus,
 textarea:hover,
 textarea:focus,
 select:hover,
-select:focus {
+select:focus,
+.bookmark-icon-button:hover {
   border: #4ba8d8 1px solid;
 }
 
@@ -191,6 +213,7 @@ nav {
   align-items: center;
 }
 
+.sort-label,
 .flex-outer > li > label {
   margin-right: 20px;
 }
@@ -204,6 +227,7 @@ nav {
   min-width: 120px;
 }
 
+.sort-wrapper > li:not(:last-child),
 .flex-outer > li:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -330,24 +354,114 @@ input.InputAddOn-field {
 /* Sorting Issues */
 select[id^="sort-"] {
   flex: 1;
+  align-self: stretch;
 }
 
 .sort-function {
   flex: 1;
   max-width: 40px;
-  text-align: center;
+  justify-content: center;
 }
 
-.flex-inner li.sort-selection {
+li.sort-selection {
   flex: 1;
   display: flex;
   height: 40px;
 }
 
-.sort-function:hover {
-  color: #4ba8d8
+.sort-list:not(:last-of-type) {
+  margin-bottom: 20px;
 }
 
-.sort-function .fa-times:hover {
+.glow:hover {
+  color: #4ba8d8;
+  cursor: default;
+}
+
+.remove:hover {
   color: red;
 }
+
+/* Bookmarks */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: flex-end;
+}
+
+.table-row {
+  display: flex;
+  align-items: center;
+}
+.table-row:nth-child(odd) {
+  background-color: #e8e8e8;
+}
+
+.table-column {
+  flex: 1 0 40px;
+  max-width: 20px;
+  margin: 10px;
+}
+
+.bookmark-title {
+  flex: 1;
+  margin: 10px;
+}
+
+.help {
+  font-size: small;
+  color: #ccc;
+  margin: 0;
+}
+
+.sort-label {
+  align-self: flex-start;
+}
+
+.flex-outer.sort-wrapper {
+  flex: 1;
+}
+.sort-wrapper ul.flex-outer button {
+  background: #889aa7;
+  border-radius: 5px;
+  max-width: 300px;
+}
+.sort-wrapper ul.flex-outer button:hover {
+  background: #4ba8d8;
+}
+.bookmark-form {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.center-separator {
+  display: flex;
+}
+.center-separator, 
+.center-separator > i {
+  line-height: 2.8rem;
+}
+.center-separator:after,
+.center-separator:before {
+  content: '';
+  flex: 1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 48.5%, #d6d6d6 48.5%, #ffffff 51.5%, rgba(255, 255, 255, 0) 51.5%)
+}
+.center-separator:after {
+  margin-left: 10px;
+}
+.center-separator:before {
+  margin-right: 10px;
+}
+
+.bookmark-icon {
+  max-width: 38px;
+}
+.bookmark-icon-button {
+  margin-left: 10px;
+}
+.success {
+  background: #65bb65 !important;
+}
+

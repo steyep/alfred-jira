@@ -7,14 +7,11 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * Run the build script `npm run build`
 
 ## Features
-* List issues assigned to you
-  * Returns a list of issues that are currently assigned to you
-* List issues that you are "watching"
-  * Returns a list of JIRA issues that you are currently watching
-  * Ordered in descending order of when they were last updated
-* Easily filter your issues and the issues you are watching by *any* string in the issue (including `status`, `reporter`, etc).
-  * `jira` followed by the search string will search your assigned & watched issues
-  * The same can be done within the `My Tickets` and `Watched Issues` menus but will limit the search to the menu you are currently on.
+* Create "bookmarks" of custom JQL search queries that allow the user to quickly return a list of issues that meet the defined criteria.
+  * By default, `alfred-jira` has two bookmarks for **issues assigned to you** and **issues that you are watching**.
+* Easily filter your bookmark results by *any* string in the issue (including `status`, `reporter`, etc).
+  * `jira` followed by the search string will search all of your bookmark results
+  * The same can be done within a bookmark menu but will limit the search to the menu you are currently on.
   * Wildcards and Regular Expressions are valid search strings
 * Search JIRA
   * Returns a list of JIRA issues that contain the search string in the **summary**, **description**, or **comments**
@@ -58,7 +55,6 @@ In order to authenticate against the JIRA API, your username/password will be re
 ## Performance
 For better performance, some information is persisted in `~/.alfred-jira`:
 
-* The tickets assigned to you will persist for 15 minutes. 
 * The list of users will persist for 7 days
 * The list of available transitions will persist for 45 seconds
 * The list of search results will persist for 45 seconds

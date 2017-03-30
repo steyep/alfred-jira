@@ -1,5 +1,7 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
+const sh = require('child_process');
+const path = require('path');
 const jira = require('../lib/jira');
 const config = require('../lib/jira/config');
 const Extras = require('../lib/jira/grab-images');
@@ -13,6 +15,10 @@ const appName = appDetails.name.replace(/([a-z])([a-z]+)/g, (a,b,c) => b.toUpper
 const version = appDetails.version;
 const loginOnly = process.argv[2] == 'login';
 const update = process.argv[2] == 'update';
+const tmp = {
+  dir: process.env.TMPDIR || config.cfgPath,
+  prefix: 'bookmark',
+};
 
 global['login-only'] = loginOnly;
 global['app-name'] = appName;
@@ -43,10 +49,20 @@ app.on('ready', function(){
     height: 680,
     minWidth: 820,
     minHeight: 440,
-    show: false
+    show: false,
+    titleBarStyle: 'hidden'
   });
   win.loadURL(`file://${__dirname}/index.html`);
   // win.webContents.openDevTools();
+  
+  // Open links in browser (not Electron)
+  win.webContents.on('new-window', (event, requestedURL) => {
+    event.preventDefault();
+    sh.exec('open ' + requestedURL, err => {
+      if (err) throw err;
+    });
+  })
+
   win.once('ready-to-show', () => {
     if (update) {
       win.focus();
@@ -67,6 +83,11 @@ app.on('ready', function(){
     } else {
       win.show();
     }
+  });
+
+  app.on('before-quit', () => {
+    // Clean up after ourselves. 
+    sh.execSync(`find ${tmp.dir} -maxdepth 1 -type f -name '${tmp.prefix}*png' -delete`);
   });
 })
 
@@ -149,4 +170,32 @@ ipcMain.on('download-imgs', (event, type) => {
   Extras(type, () => {
     event.sender.send('download-complete', type);
   });
+});
+
+ipcMain.on('get-bookmark-icon', (event, index) => {
+  let window = BrowserWindow.fromWebContents(event.sender);
+  dialog.showOpenDialog(window, {
+    title: app.getName(),
+    properties: ['openFile'],
+    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
+  }, res => {
+    if (res) {
+      res = res[0];
+      let parsedPath = path.parse(res);
+      let dest = path.normalize(path.join(tmp.dir, parsedPath.base));
+      let tmpFile = path.normalize(path.join(tmp.dir + tmp.prefix)) + new Date().getTime() + '.png';
+      sh.exec(`qlmanage -t -s 48 -o "${tmp.dir}" "${res}" 1>&2
+        test -f "${dest}.png" && mv "${dest}.png" "${tmpFile}"`,
+      err => {
+        if (err) throw err;
+        event.sender.send('set-bookmark-icon', tmpFile);
+      })
+    }
+  })
+});
+
+ipcMain.on('test-bookmark', (event, bookmark) => {
+  jira.testBookmark(bookmark)
+    .then(() => event.sender.send('bookmark-validation', true))
+    .catch(err => event.sender.send('bookmark-validation', err));
 });

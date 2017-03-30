@@ -86,7 +86,7 @@
       <!-- Settings Form -->
       <div class="flex-column"  ng-show="!showLogin">
         <form id="settings-form">
-        
+
         <!-- General User Settings -->
         <section id="settings">
           <div class="section-title">
@@ -116,34 +116,117 @@
             </ul>
           </section>
           
-          <!-- Sorting -->
-          <section id="sorting">
+          <!-- Bookmarks -->
+          <section id="Bookmarks">
             <div class="section-title">
-              <h3>Sorting</h3>            
+              <h3>Bookmarks</h3>            
             </div>
             <hr>
-            <ul class="flex-inner" ng-repeat="(pos, val) in data.sort">
-              <li class="sort-selection">
-                <select 
-                  name="sort-{{ pos }}" 
-                  id="sort-{{ pos }}" 
-                  ng-model="val.name" 
-                  ng-options="val for val in sortFields(val.name)">
-                </select>
-              </li>
-              <li class="sort-function" ng-click="val.desc=!val.desc">
-                <i ng-show="!val.desc" class="fa fa-lg fa-sort-up"></i>
-                <i ng-show="val.desc" class="fa fa-lg fa-sort-down"></i>
-              </li>
-              <li class="sort-function" ng-click="data.sort.splice(pos, 1)" ng-show="data.sort.length > 1">
-                <i class="fa fa-times fa-lg"></i>
-              </li>
-            </ul>
-            <ul class="flex-outer">
-              <li>
-                 <button type="button" ng-click="data.sort.push({ name: sortFields()[0], desc: true })" ng-show="sortFields().length">Then</button>
-              </li>
-            </ul>
+            <p>
+              <b>Bookmarks</b> are saved <a href="https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html" target="_blank">JQL</a> queries that display as soon as you type <code>jira</code> into Alfred. You can edit the default queries or create custom ones to better fit your needs. 
+            </p>
+            <div class="bookmark-form" id="bookmark-form">
+              <ul class="flex-outer">
+                <li>
+                  <label for="bookmarkName">Name</label>
+                  <input type="text" name="bookmarkName" ng-model="selectedBookmark.name">
+                  <img 
+                    ng-src="{{ bookmarkIcon(selectedIcon) }}"
+                    class="bookmark-icon bookmark-icon-button" 
+                    ng-click="getBookmarkIcon(selectedBookmarkIndex)"/>
+                    <div class="table-column remove" ng-show="selectedIcon" ng-click="selectedIcon = null">
+                      <i class="fa fa-times fa-lg"></i>                    
+                    </div>
+                </li>
+                <li>
+                  <label for="bookmarkQuery">
+                    Query
+                  <p class="help"><a href="https://docs.atlassian.com/jira/jsw-docs-070/Advanced+searching" target="_blank"><i class="fa fa-question-circle"></i> Syntax Help</a></p>
+                  </label>
+                  <input type="text" name="bookmarkQuery" ng-model="selectedBookmark.query">
+                </li>
+              </ul>
+              <ul class="flex-inner" ng-hide="selectedBookmark.hideSort">
+                <div class="sort-label">Order by</div>
+                  <div class="flex-outer sort-wrapper">
+                    <ul class="flex-inner sort-list" ng-repeat="(pos, val) in selectedBookmark.sort">
+                      <li class="sort-selection">
+                        <select 
+                          name="sort-{{ pos }}" 
+                          id="sort-{{ pos }}" 
+                          ng-model="val.name" 
+                          ng-options="val for val in sortFields(val.name)">
+                        </select>
+                      </li>
+                      <li class="sort-function glow" ng-click="val.desc=!val.desc">
+                        <i ng-show="!val.desc" class="fa fa-lg fa-sort-up"></i>
+                        <i ng-show="val.desc" class="fa fa-lg fa-sort-down"></i>
+                      </li>
+                      <li class="sort-function remove" ng-click="selectedBookmark.sort.splice(pos, 1)" ng-show="selectedBookmark.sort.length > 1">
+                        <i class="fa fa-times fa-lg"></i>
+                      </li>
+                    </ul>
+                    <div class="center-separator">
+                      <div class="glow" ng-click="selectedBookmark.sort.push({ name: sortFields()[0], desc: true })" ng-show="sortFields().length">
+                        <i class="fa fa-plus-circle"></i>&nbsp;Add another order field
+                      </div>
+                    </div>
+                  </div>
+                </ul>
+                <ul class="flex-outer">
+                <li>
+                  <label for="bookmarkCacheLimit">
+                    Cache Limit (in milliseconds)
+                    <p class="help" ng-bind="cacheConversion"></p>
+                  </label>
+                  <input name="bookmarkCacheLimit" type="number" step="60000" min="0" ng-model="selectedBookmark.cache"/>
+                </li>
+                <li>
+                  <input name="limitProjects" type="checkbox" ng-model="selectedBookmark.limitProjects"/>
+                  <label for="limitProjects">Limit query to <a href="#projects">enabled projects</a></label>
+                </li>
+                <li>
+                  <input name="limitStatuses" type="checkbox" ng-model="selectedBookmark.limitStatuses"/>
+                  <label for="limitStatuses">Limit query to <a href="#statuses">enabled statuses</a></label>
+                </li>
+                <li>
+                  <button
+                    type="button" 
+                    ng-click="addBookmark(selectedBookmark)" 
+                    ng-disabled="!(selectedBookmark.name && selectedBookmark.query)"
+                    ng-class="(selectedBookmark.name && selectedBookmark.query) ? '' : 'disabled'">
+                    {{ bookmarkInEdit ? 'OK' : 'Add' }}
+                  </button>
+                  <button
+                    type="button" 
+                    ng-click="testBookmark(selectedBookmark)" 
+                    ng-disabled="!selectedBookmark.query || inProgress.testConfig"
+                    ng-class="{ 'disabled': !selectedBookmark.query || inProgress.testConfig, 'success': testSuccessful }"
+                    >
+                    <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.testConfig"></i>
+                    <i class="fa fa-lg fa-check-circle" ng-show="testSuccessful"></i>
+                    Test Config
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <hr>
+            <div class="table-container">
+              <div class="table-row" ng-repeat="bookmark in data.bookmarks track by $index">
+                <div class="table-column">
+                  <img ng-src="{{ bookmarkIcon(bookmark.icon) }}" class="bookmark-icon">
+                </div>
+                <div class="bookmark-title">
+                  {{ bookmark.name }}
+                </div>
+                <div class="table-column glow" ng-click="editBookmark(bookmark, $index)">
+                  <i class="fa fa-pencil fa-lg"></i>
+                </div>
+                <div class="table-column remove" ng-click="deleteBookmark($index)">
+                  <i class="fa fa-times fa-lg"></i>
+                </div>
+              </div>
+            </div>
           </section>
           
           <!-- Enabled Menu Items -->

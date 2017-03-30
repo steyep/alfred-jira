@@ -31,7 +31,7 @@ const icon = remote.getGlobal('icon');
 
 let app = angular.module('alfred-jira', []);
 
-app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $element) => {
+app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorScroll', ($scope, $timeout, $element, $location, $anchorScroll) => {
   
   // Cancel login when esc is pressed.
   $element.bind("keydown keypress", function (event) {
@@ -100,6 +100,17 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
 
   $scope.save = () => {
     $scope.data.url = $scope.data.url.replace(/(.)\/*$/, '$1/');
+    if ($scope.data.bookmarks) {
+      $scope.data.bookmarks = $scope.data.bookmarks
+        .map((bookmark, index) => {
+          let dest = config.cfgPath + 'bookmark-' + index + '.png';
+          if (bookmark.icon && bookmark.icon != dest && !/resources/.test(bookmark.icon)) {
+            fs.renameSync(bookmark.icon, dest);
+            bookmark.icon = dest;
+          }
+          return bookmark;
+        });
+    }
     fs.writeFileSync(cfgFile, JSON.stringify($scope.data, null, 2));
     ipcRenderer.send('close');
   }
@@ -118,16 +129,12 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
     $timeout(() => $scope.inProgress[type] = true, 0);
   }
 
-  if (!$scope.data.sort) {
-    $scope.data.sort = config.sort;
-  }
-
   $scope.sortFields = pos => {
     return [
       'Assignee',
       'Created',
-      'Due Date',
-      'Issue Type',
+      'DueDate',
+      'IssueType',
       'Key',
       'Priority',
       'Reporter',
@@ -135,9 +142,98 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       'Status',
       'Updated'
     ].filter(ele => {
-      return ele == pos || !$scope.data.sort.map(s => s.name).includes(ele);
+      return ele == pos || !$scope.selectedBookmark.sort.map(s => s.name).includes(ele);
     })
   };
+
+  const getTime = mil => {
+    s = mil/1000;
+    m = s/60;
+    h = m/60;
+    d = h/24;
+    return [d,h,m,s].map((time, index) => {
+      time = Math.floor(time);
+      if (index) {
+        time %= index === 1 ? 24 : 60;
+      }
+      return time ? time + ' ' + ['days','hours','minutes','seconds'][index] : 0;
+    }).filter(Boolean).join(' ');
+  }
+
+  if (!$scope.data.bookmarks) {
+    $scope.data.bookmarks = config.bookmarks;
+  }
+
+  // Default to 15 minute cache time.
+  class Bookmark {
+    constructor(obj) {
+      obj = obj || {};
+      this.name = obj.name || null;
+      this.query = obj.query || null;
+      this.cache = obj.cache || 900000;
+      this.sort = obj.sort || [{ name: 'Updated', desc: true }];
+      this.limitStatuses = obj.limitStatuses !== false;
+      this.limitProjects = obj.limitProjects !== false;
+      this.icon = obj.icon || null;
+    }
+  }  
+
+  $scope.getBookmarkIcon = index => {
+    if (index === undefined) {
+      index = $scope.data.bookmarks.length;
+    }
+    ipcRenderer.send('get-bookmark-icon', index);
+  }
+  
+  $scope.bookmarkIcon = fileName => {
+    if (fileName && fs.existsSync(fileName)) {
+      return fileName;
+    }
+    return '../resources/icons/bookmark.png';
+  }
+
+  $scope.editBookmark = (bookmark, index) => {
+    $scope.bookmarkInEdit = true;
+    $scope.selectedBookmarkIndex = index;
+    $scope.selectedBookmark = new Bookmark(bookmark);
+    $scope.selectedIcon = $scope.selectedBookmark.icon
+    $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
+    $location.hash('bookmark-form');
+    $anchorScroll();
+  }
+
+  $scope.addBookmark = bookmark => {
+    if ($scope.selectedIcon != bookmark.icon) {
+      bookmark.icon = $scope.selectedIcon;
+    }
+    if ($scope.selectedBookmarkIndex !== undefined) {
+      $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
+      delete $scope.selectedBookmarkIndex;
+    } else {
+      $scope.data.bookmarks.push(bookmark);
+    }
+    delete $scope.selectedIcon;
+    $scope.selectedBookmark = new Bookmark();
+    $scope.bookmarkInEdit = false;
+  }
+
+  $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
+
+  $scope.testBookmark = bookmark => {
+    $scope.inProgress.testConfig = true;
+    $scope.testSuccessful = false;
+    ipcRenderer.send('test-bookmark', bookmark);
+  }
+
+  $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
+
+  $scope.$watch("selectedBookmark.cache",
+    val => $scope.cacheConversion = getTime(val));
+
+  $scope.$watch("selectedBookmark.query", val => { 
+      $scope.testSuccessful = false;
+      $scope.selectedBookmark.hideSort = /order.+by/i.test(val)
+  });
 
   // Prompt user to save before closing.
   let promptUser = loginOnly; // Only ask once.
@@ -174,5 +270,20 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', ($scope, $timeout, $el
       body: `Finished downloading icons: ${type}`,
       icon: icon
     });
-  })
+  });
+
+  ipcRenderer.on('set-bookmark-icon', (channel, fileName) => {
+    $timeout(() => {
+      $scope.selectedIcon = fileName;
+    }, 0);
+  });
+
+  ipcRenderer.on('bookmark-validation', (channel, result) => {
+    $timeout(() => {
+      $scope.inProgress.testConfig = false;
+      $scope.testSuccessful = result === true;
+      if (!$scope.testSuccessful) 
+        alert(`Bookmark Config Invalid:\n\n${result}`);
+    }, 0);
+  });
 }]);
