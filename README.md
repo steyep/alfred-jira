@@ -32,6 +32,12 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
     * **Stopping** progress will log the time spent on an issue to JIRA as well as the exact time/date you began working on the issue.
 * Open issue in a web browser
 
+## Keywords
+* `jira` starts the workflow and allows the user to navigate through the menus/search issues
+* `jiraopen` – Short cut for opening an issue in the browser. The issue key must be given as a parameter:
+  * `jiraopen ABC-123`
+* `jiraclear` – Clears the progress timer for an issue ***without*** logging the time to JIRA.
+
 ## Settings
 #### Projects & Statuses
 After installing the workflow and logging in, the workflow will default to include all projects and statuses available in your JIRA instance. It is recommended that you open the settings pane and configuring the workflow to show only the projects and issue statuses that you are interested in. For example: disabling `Done` and `Closed` issue statuses.
