@@ -464,6 +464,10 @@ li.sort-selection {
 .success {
   background: #65bb65 !important;
 }
+.failed {
+  background: #BB4D4B !important;
+}
+
 
 #select-all {
   align-self: flex-end;
@@ -475,3 +479,17 @@ li.sort-selection {
 #select-all:hover {
   color: #383838;
 }
+
+.embedded {
+  background: #fff;
+  overflow: scroll;
+  height: 150px;
+}
+.embedded > * {
+  padding: 0 1em;
+}
+.report {
+  -webkit-app-region: no-drag;
+  -webkit-user-select: initial;
+}
+

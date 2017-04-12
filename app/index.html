@@ -6,7 +6,6 @@
   </head>
   <body>
     <div class="container">
-      
       <!-- Nav Menu -->
       <nav  ng-show="!showLogin">
         <div class="nav-container">
@@ -107,11 +106,37 @@
                 <label for="log_time_increments">Round time to the nearest increment</label>
                 <input type="text" ng-model="options.log_time_increments"/>
               </li>
-            </ul>
-            <ul class="flex-inner">
               <li>
                 <input id="advancedSearch" name="advancedSearch" type="checkbox" ng-model="options.advancedSearch"/>
                 <label for="advancedSearch">Advanced Search (JQL)</label>
+              </li>
+              <li>
+                <input id="backgroundCache" name="backgroundCache" type="checkbox" ng-model="options.backgroundCache"/>
+                <label for="backgroundCache">Refresh workflow cache in the background</label>
+              </li>
+              <li ng-show="options.backgroundCache" class="indented">
+                <label for="backgroundCacheInterval">Interval (in minutes)
+                <p class="help" ng-bind="backgroundCacheIntervalConversion"></p>
+                </label>
+                <input type="number" min="10" step="5" ng-model="options.backgroundCacheInterval"/>
+                <button 
+                  type="button" 
+                  class="inline-button fade" 
+                  ng-click="checkDaemonStatus()" 
+                  ng-disabled="inProgress.daemon"
+                  ng-show="daemonRunning"
+                  ng-class="{ 'disabled': inProgress.daemon, 'success': daemonStatus, 'failed': daemonStatus === false }">
+                    <i class="fa fa-spinner fa-spin fa-lg" ng-show="inProgress.daemon"></i>
+                    <i class="fa fa-lg fa-check-circle" ng-show="daemonStatus"></i>
+                    <i class="fa fa-lg fa-times" ng-show="daemonStatus === false"></i>
+                    Status
+                </button>
+              </li>
+              <li class="indented" ng-show="options.backgroundCache">
+                <label for="daemonLog" name="daemonLog">Logs</label>
+                <div class="embedded report">
+                  <pre>{{ daemonLog }}</pre>
+                </div>
               </li>
             </ul>
           </section>
