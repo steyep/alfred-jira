@@ -16,7 +16,7 @@ paths=("$1" "$HOME/Dropbox" "$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 for i in "${paths[@]}"; do
   d=${i// /\ }
   [[ ! -d $d ]] && continue
-  path="$(find "$d" -path "*.alfredpreferences/workflows")"
+  path="$(find "$d" -path "*.alfredpreferences/workflows" | head -n 1)"
   if [[ -n "$path" ]]; then
     echo "Found preferences at: $(dirname "$path")"
     break
