@@ -111,8 +111,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
           return bookmark;
         });
     }
-    fs.writeFileSync(cfgFile, JSON.stringify($scope.data, null, 2));
-    ipcRenderer.send('close');
+    fs.writeFile(cfgFile, JSON.stringify($scope.data, null, 2), err => {
+      let text = document.body.getElementsByClassName('save')[0].lastChild.textContent;
+      document.body.getElementsByClassName('save')[0].lastChild.textContent = 'SAVED!';
+      setTimeout(() => {
+        document.body.getElementsByClassName('save')[0].lastChild.textContent = text;
+      }, 1000);
+    });
   }
 
   $scope.clearCache = () => ipcRenderer.send('clearCache');
