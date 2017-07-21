@@ -219,6 +219,9 @@
                 <div class="bookmark-title">
                   {{ bookmark.name }}
                 </div>
+                <div class="table-column glow" ng-click="copyBookmark(bookmark)">
+                  <i class="fa fa-clone fa-lg"></i>
+                </div>
                 <div class="table-column glow" ng-click="editBookmark(bookmark, $index)">
                   <i class="fa fa-pencil fa-lg"></i>
                 </div>

@@ -222,6 +222,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $scope.bookmarkInEdit = false;
   }
 
+  $scope.copyBookmark = bookmark => {
+    let copy = new Bookmark(bookmark);
+    copy.name = `Copy of ${copy.name}`;
+    $scope.selectedIcon = bookmark.icon;
+    $scope.addBookmark(copy);
+  }
+
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
   $scope.testBookmark = bookmark => {
