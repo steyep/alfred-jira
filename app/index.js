@@ -232,6 +232,17 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
 
+  $scope.selectAllLabel = category => !$scope.options[category].every(opt => opt.enabled) ? 'Select All' : 'Deselect All';
+
+  $scope.selectAll = category => {
+    let enabled = $scope.selectAllLabel(category) == 'Select All';
+
+    $scope.options[category].map(opt => {
+      opt.enabled = enabled;
+      return opt;
+    });
+  }
+
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
 

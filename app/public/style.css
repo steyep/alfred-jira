@@ -465,3 +465,13 @@ li.sort-selection {
   background: #65bb65 !important;
 }
 
+#select-all {
+  align-self: flex-end;
+  font-size: smaller;
+  margin-left: 10px;
+  cursor: pointer;
+  color: #ccc;
+}
+#select-all:hover {
+  color: #383838;
+}
