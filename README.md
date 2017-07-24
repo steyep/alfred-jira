@@ -65,3 +65,5 @@ For better performance, some information is persisted in `~/.alfred-jira`:
 * The list of available transitions will persist for 45 seconds
 * The list of search results will persist for 45 seconds
 * Update status will persist for 24 hours (unless an update **is** available – in which case the workflow stops checking for updates).
+
+You also have the ability to enable *background cacheing* by selecting "**Refresh workflow cache in the background**" in the settings pane. Once you specify a time interval and save the settings, the app will create a LaunchAgent file (`$HOME/Library/LaunchAgents/com.alfred-jira.helper.plist`) that will keep your issues synced with the server so that you don't experience any lag when navigating your bookmark queries. The LaunchAgent only runs when it can connect to your Jira instance and is disabled when your credentials are invalid to prevent an accidental account lockout.
