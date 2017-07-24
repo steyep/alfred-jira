@@ -2,7 +2,17 @@ const config = require('../lib/jira/config');
 const keychain = require('../lib/jira/keychain');
 const cfgFile = config.cfgPath + config.cfgFile;
 const fs = require('fs');
+const daemon = require('../lib/daemon');
+const sh = require('child_process');
 const { ipcRenderer, remote } = require('electron');
+
+
+Object.prototype.Get = function(key) {
+  return key.split('.')
+            .reduce(function (s,p) { 
+              return typeof s == 'undefined' || typeof s === null ? s : s[p];
+            }, this);
+}
 
 require('angular');
 
@@ -100,6 +110,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.save = () => {
     $scope.data.url = $scope.data.url.replace(/(.)\/*$/, '$1/');
+
     if ($scope.data.bookmarks) {
       $scope.data.bookmarks = $scope.data.bookmarks
         .map((bookmark, index) => {
@@ -111,8 +122,35 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
           return bookmark;
         });
     }
-    fs.writeFileSync(cfgFile, JSON.stringify($scope.data, null, 2));
-    ipcRenderer.send('close');
+
+    fs.writeFile(cfgFile, JSON.stringify($scope.data, null, 2), err => {
+
+      // Handle background caching.
+      let bgCache = $scope.data.options.backgroundCache;
+      let bgInterval = $scope.data.options.backgroundCacheInterval || null;
+
+      if (bgCache !== undefined && bgInterval !== null) {
+        let daemonStatus;
+        if (bgCache && $scope.data.url) {
+          daemonStatus = daemon.load($scope.data.url, (bgInterval * 60)) ?
+            'Background process running every ' + getTime(bgInterval * 60000) :
+            'Failed to load background process';
+          $timeout(() => $scope.daemonRunning = true, 0);
+        } else {
+          daemonStatus = daemon.unload() ?
+            'Background process stopped' :
+            'Failed to unload background process';
+          $timeout(() => $scope.daemonRunning = false, 0);
+        }
+        alert(daemonStatus);
+      }
+
+      let text = document.body.getElementsByClassName('save')[0].lastChild.textContent;
+      document.body.getElementsByClassName('save')[0].lastChild.textContent = 'SAVED!';
+      setTimeout(() => {
+        document.body.getElementsByClassName('save')[0].lastChild.textContent = text;
+      }, 1000);
+    });
   }
 
   $scope.clearCache = () => ipcRenderer.send('clearCache');
@@ -217,6 +255,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $scope.bookmarkInEdit = false;
   }
 
+  $scope.copyBookmark = bookmark => {
+    let copy = new Bookmark(bookmark);
+    copy.name = `Copy of ${copy.name}`;
+    $scope.selectedIcon = bookmark.icon;
+    $scope.addBookmark(copy);
+  }
+
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
   $scope.testBookmark = bookmark => {
@@ -227,8 +272,48 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
 
+ $scope.selectAllLabel = category => !$scope.options[category].every(opt => opt.enabled) ? 'Select All' : 'Deselect All';
+
+  $scope.selectAll = category => {
+    let enabled = $scope.selectAllLabel(category) == 'Select All';
+
+    $scope.options[category].map(opt => {
+      opt.enabled = enabled;
+      return opt;
+    });
+  }
+
+  $scope.checkDaemonStatus = () => {
+    $scope.inProgress.daemon = 0;
+    if (daemon.status() === '0') {
+      $scope.daemonStatus = true;
+      $timeout(() => $scope.daemonStatus = 0, 3000);
+    } else {
+      $scope.daemonStatus = false;
+      $timeout(() => $scope.daemonStatus = 0, 3000);
+    }
+    $scope.inProgress.daemon = false;
+  }
+  $scope.daemonRunning = data.Get('options.backgroundCache') === true;
+
+  $scope.logFile = config.plistFileLog;
+  if (fs.existsSync($scope.logFile)) {
+    const updateDaemonLog = () => $timeout(() => {
+      try {
+        $scope.daemonLog = sh.execSync(`tail -r -n 20 ${$scope.logFile}`).toString();
+      } catch(e) {
+        $scope.daemonLog = `Caught exception when trying to read from ${$scope.logFile}:\n ${e}`;
+      }
+    }, 0);
+    fs.watch($scope.logFile, updateDaemonLog);
+    updateDaemonLog();
+  }
+
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
+  
+  $scope.$watch("options.backgroundCacheInterval",
+    val => $scope.backgroundCacheIntervalConversion = getTime(val * 60000));
 
   $scope.$watch("selectedBookmark.query", val => { 
       $scope.testSuccessful = false;
