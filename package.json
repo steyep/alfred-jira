@@ -1,6 +1,6 @@
 {
   "name": "alfred-jira",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "An Alfred workflow to interact with Jira",
   "main": "./app/main.js",
   "scripts": {
