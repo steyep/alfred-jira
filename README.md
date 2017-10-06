@@ -7,6 +7,10 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * Run the build script `npm run build`
 
 ## Features
+* Quickly create new issues.
+  * **Project** and **Issue Type** fields are required and must be defined before submitted the summary.
+  * The summary can contain multiple periods (`.`) but the last character in the summary *must* be a period in order to submit the new issue. This is a precaution used to prevent premature submission of new issues.
+  * **Alfred 3** users can `cmd + enter` when submitting the issue to open the newly created issue in the browser.
 * Create "bookmarks" of custom JQL search queries that allow the user to quickly return a list of issues that meet the defined criteria.
   * By default, `alfred-jira` has two bookmarks for **issues assigned to you** and **issues that you are watching**.
 * Easily filter your bookmark results by *any* string in the issue (including `status`, `reporter`, etc).
