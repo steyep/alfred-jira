@@ -140,6 +140,37 @@
               </li>
             </ul>
           </section>
+
+          <!-- Create Issues -->
+          <section id="createIssue">
+            <div class="section-title">
+              <h3>Issue Creation</h3>
+            </div>
+            <hr>
+            <p>By configuring the values below, users may define default values to use when creating Jira issues from Alfred.</p>
+            <ul class="flex-outer createIssue">
+              <li>
+                <label for="assignee">Assignee</label>
+                <select name="assignee" id="assignee" ng-model="options.create_issue_defaults.assignee">
+                  <option ng-repeat="assignee in users" value="{{ assignee.username }}">{{ assignee.name }}</option>
+                </select>
+              </li>
+              <li>
+                <label for="project">Project</label>
+                <select name="project" id="project" ng-model="options.create_issue_defaults.project">
+                  <option value="">N/A</option>
+                  <option ng-repeat="project in options.available_projects" value="{{ project.name }}">{{ project.name }}</option>
+                </select>
+              </li>
+              <li>
+                <label for="issuetype">Issue Type</label>
+                <select name="issuetype" id="issuetype" ng-model="options.create_issue_defaults.issuetype">
+                  <option value="">N/A</option>
+                  <option ng-repeat="issuetype in issuetypes" value="{{ issuetype }}">{{ issuetype }}</option>
+                </select>
+              </li>
+            </ul>
+          </section>
           
           <!-- Bookmarks -->
           <section id="Bookmarks">

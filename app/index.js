@@ -61,7 +61,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   $scope.options = data.options || {
     available_projects: [],
     enabled_menu_items: [],
-    available_issues_statuses: []
+    available_issues_statuses: [],
+    create_issue_defaults: {}
   };
   ValidateOptions($scope.options);
 
@@ -309,6 +310,13 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     updateDaemonLog();
   }
 
+  // Assign new issues to current user unless otherwise specified.
+  if ($scope.Get('options.create_issue_defaults') === undefined) {
+    $scope.options.create_issue_defaults = {
+      assignee: $scope.data.user
+    };
+  }
+
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
   
@@ -330,6 +338,23 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       return undefined;
     }
   }
+
+  ipcRenderer.send('get-users');
+
+  ipcRenderer.on('set-users', (channel, users) => {
+    $timeout(()=> $scope.users = users.map(user => {
+      return {
+        name: user.name,
+        username: user.username
+      }
+    }), 0);
+  })
+
+  ipcRenderer.send('get-issuetypes');
+
+  ipcRenderer.on('set-issuetypes', (channel, issuetypes) => {
+    $timeout(()=> $scope.issuetypes = issuetypes.map(issuetype => issuetype.name), 0);
+  })
 
   ipcRenderer.on('set-option', (channel, key, data) => {
     data = data.map(opt => {

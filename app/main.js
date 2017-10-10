@@ -199,3 +199,19 @@ ipcMain.on('test-bookmark', (event, bookmark) => {
     .then(() => event.sender.send('bookmark-validation', true))
     .catch(err => event.sender.send('bookmark-validation', err));
 });
+
+ipcMain.on('get-users', event => {
+  if (!loginOnly) {
+    jira.getUsers().then(users => {
+      event.sender.send('set-users', users);
+    })
+  }
+})
+
+ipcMain.on('get-issuetypes', event => {
+  if (!loginOnly) {
+    jira.getIssueTypes().then(issuetypes => {
+      event.sender.send('set-issuetypes', issuetypes);
+    })
+  }
+})
