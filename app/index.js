@@ -227,7 +227,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     if (fileName && fs.existsSync(fileName)) {
       return fileName;
     }
-    return '../resources/icons/bookmark.png';
+    return config.iconPath + '/bookmark.png';
+    // return '../resources/icons/bookmark.png';
   }
 
   $scope.editBookmark = (bookmark, index) => {
