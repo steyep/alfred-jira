@@ -1,6 +1,6 @@
 {
   "name": "alfred-jira",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "An Alfred workflow to interact with Jira",
   "main": "./app/main.js",
   "scripts": {
@@ -17,16 +17,19 @@
     "darwin"
   ],
   "dependencies": {
-    "angular": "^1.7.9",
-    "axios": ">=0.19.0",
-    "electron": "^1.7.7",
-    "font-awesome": "^4.7.0",
-    "moment": "^2.15.1",
-    "node-persist": "^1.0.0",
-    "xmlbuilder": "^8.2.2"
+    "angular": "1.7.9",
+    "axios": "0.19.2",
+    "electron": "1.8.8",
+    "font-awesome": "4.7.0",
+    "moment": "2.24.0",
+    "node-persist": "1.0.1",
+    "xmlbuilder": "8.2.2"
   },
   "repository": {
     "type": "git",
     "url": "steyep/alfred-jira"
+  },
+  "devDependencies": {
+    "eslint": "6.8.0"
   }
 }

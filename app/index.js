@@ -9,10 +9,10 @@ const { ipcRenderer, remote } = require('electron');
 
 Object.prototype.Get = function(key) {
   return key.split('.')
-            .reduce(function (s,p) {
-              return typeof s == 'undefined' || typeof s === null ? s : s[p];
-            }, this);
-}
+    .reduce(function (s,p) {
+      return typeof s == 'undefined' || typeof s === null ? s : s[p];
+    }, this);
+};
 
 require('angular');
 
@@ -22,7 +22,7 @@ const getData = () => {
     data = JSON.parse(fs.readFileSync(cfgFile, 'utf-8'));
   }
   return data;
-}
+};
 
 const ValidateOptions = (obj) => {
   ['available_projects', 'enabled_menu_items', 'available_issues_statuses'].forEach(key => {
@@ -31,8 +31,8 @@ const ValidateOptions = (obj) => {
       return;
     }
     ipcRenderer.send('get-option', key);
-  })
-}
+  });
+};
 
 const loginOnly = remote.getGlobal('login-only');
 const appName = remote.getGlobal('app-name');
@@ -44,7 +44,7 @@ let app = angular.module('alfred-jira', []);
 app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorScroll', ($scope, $timeout, $element, $location, $anchorScroll) => {
 
   // Cancel login when esc is pressed.
-  $element.bind("keydown keypress", function (event) {
+  $element.bind('keydown keypress', function (event) {
     if (event.key === 'Escape' || event.which === 27) {
       $timeout($scope.cancelLogin, 0);
     }
@@ -61,7 +61,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   $scope.options = data.options || {
     available_projects: [],
     enabled_menu_items: [],
-    available_issues_statuses: []
+    available_issues_statuses: [],
+    create_issue_defaults: {},
   };
   ValidateOptions($scope.options);
 
@@ -73,7 +74,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   const removeProtocol = url => (url || '').replace(/\s+|https?:\/\//gi, '');
   $scope.loginData = {
     user: $scope.data.user,
-    url: $scope.data.url
+    url: $scope.data.url,
   };
 
   $scope.$watch('loginData.url',
@@ -92,21 +93,23 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       if (loginOnly) {
         ipcRenderer.send('credentials-saved', {
           url: $scope.data.url,
-          user: user
+          user: user,
         });
       }
       $scope.showLogin = false;
     }
-  }
+  };
 
   $scope.cancelLogin = () => {
-    if (loginOnly) ipcRenderer.send('close');
+    if (loginOnly) {
+      ipcRenderer.send('close');
+    }
     let data = getData();
     $scope.loginData.user = data.user;
     $scope.loginData.url = data.url;
     delete $scope.loginData.password;
     $scope.showLogin = false;
-  }
+  };
 
   $scope.save = () => {
     $scope.data.url = $scope.data.url.replace(/(.)\/*$/, '$1/');
@@ -136,7 +139,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
             'Background process running every ' + getTime(bgInterval * 60000) :
             'Failed to load background process';
           $timeout(() => $scope.daemonRunning = true, 0);
-        } else {
+        }
+        else {
           daemonStatus = daemon.unload() ?
             'Background process stopped' :
             'Failed to unload background process';
@@ -151,21 +155,21 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
         document.body.getElementsByClassName('save')[0].lastChild.textContent = text;
       }, 1000);
     });
-  }
+  };
 
   $scope.clearCache = () => ipcRenderer.send('clearCache');
 
   $scope.logout = function() {
     ipcRenderer.send('logout');
     window.onbeforeunload = undefined;
-  }
+  };
 
   $scope.inProgress = {};
 
   $scope.download = type => {
     ipcRenderer.send('download-imgs', type);
     $timeout(() => $scope.inProgress[type] = true, 0);
-  }
+  };
 
   $scope.sortFields = pos => {
     return [
@@ -178,10 +182,10 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       'Reporter',
       'Resolution',
       'Status',
-      'Updated'
+      'Updated',
     ].filter(ele => {
       return ele == pos || !$scope.selectedBookmark.sort.map(s => s.name).includes(ele);
-    })
+    });
   };
 
   const getTime = mil => {
@@ -196,7 +200,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       }
       return time ? time + ' ' + ['days','hours','minutes','seconds'][index] : 0;
     }).filter(Boolean).join(' ');
-  }
+  };
 
   if (!$scope.data.bookmarks) {
     $scope.data.bookmarks = config.bookmarks;
@@ -221,24 +225,24 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       index = $scope.data.bookmarks.length;
     }
     ipcRenderer.send('get-bookmark-icon', index);
-  }
+  };
 
   $scope.bookmarkIcon = fileName => {
     if (fileName && fs.existsSync(fileName)) {
       return fileName;
     }
     return '../resources/icons/bookmark.png';
-  }
+  };
 
   $scope.editBookmark = (bookmark, index) => {
     $scope.bookmarkInEdit = true;
     $scope.selectedBookmarkIndex = index;
     $scope.selectedBookmark = new Bookmark(bookmark);
-    $scope.selectedIcon = $scope.selectedBookmark.icon
+    $scope.selectedIcon = $scope.selectedBookmark.icon;
     $scope.cacheConversion = getTime($scope.selectedBookmark.cache);
     $location.hash('bookmark-form');
     $anchorScroll();
-  }
+  };
 
   $scope.addBookmark = bookmark => {
     if ($scope.selectedIcon != bookmark.icon) {
@@ -247,20 +251,21 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     if ($scope.selectedBookmarkIndex !== undefined) {
       $scope.data.bookmarks[$scope.selectedBookmarkIndex] = bookmark;
       delete $scope.selectedBookmarkIndex;
-    } else {
+    }
+    else {
       $scope.data.bookmarks.push(bookmark);
     }
     delete $scope.selectedIcon;
     $scope.selectedBookmark = new Bookmark();
     $scope.bookmarkInEdit = false;
-  }
+  };
 
   $scope.copyBookmark = bookmark => {
     let copy = new Bookmark(bookmark);
     copy.name = `Copy of ${copy.name}`;
     $scope.selectedIcon = bookmark.icon;
     $scope.addBookmark(copy);
-  }
+  };
 
   $scope.deleteBookmark = index => $scope.data.bookmarks.splice(index,1);
 
@@ -268,11 +273,11 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $scope.inProgress.testConfig = true;
     $scope.testSuccessful = false;
     ipcRenderer.send('test-bookmark', bookmark);
-  }
+  };
 
   $scope.selectedBookmark = $scope.selectedBookmark || new Bookmark();
 
- $scope.selectAllLabel = category => !$scope.options[category].every(opt => opt.enabled) ? 'Select All' : 'Deselect All';
+  $scope.selectAllLabel = category => !$scope.options[category].every(opt => opt.enabled) ? 'Select All' : 'Deselect All';
 
   $scope.selectAll = category => {
     let enabled = $scope.selectAllLabel(category) == 'Select All';
@@ -281,19 +286,20 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       opt.enabled = enabled;
       return opt;
     });
-  }
+  };
 
   $scope.checkDaemonStatus = () => {
     $scope.inProgress.daemon = 0;
     if (daemon.status() === '0') {
       $scope.daemonStatus = true;
       $timeout(() => $scope.daemonStatus = 0, 3000);
-    } else {
+    }
+    else {
       $scope.daemonStatus = false;
       $timeout(() => $scope.daemonStatus = 0, 3000);
     }
     $scope.inProgress.daemon = false;
-  }
+  };
   $scope.daemonRunning = data.Get('options.backgroundCache') === true;
 
   $scope.logFile = config.plistFileLog;
@@ -301,7 +307,8 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     const updateDaemonLog = () => $timeout(() => {
       try {
         $scope.daemonLog = sh.execSync(`tail -r -n 20 ${$scope.logFile}`).toString();
-      } catch(e) {
+      }
+      catch(e) {
         $scope.daemonLog = `Caught exception when trying to read from ${$scope.logFile}:\n ${e}`;
       }
     }, 0);
@@ -309,15 +316,22 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     updateDaemonLog();
   }
 
-  $scope.$watch("selectedBookmark.cache",
+  // Assign new issues to current user unless otherwise specified.
+  if ($scope.Get('options.create_issue_defaults') === undefined) {
+    $scope.options.create_issue_defaults = {
+      assignee: $scope.data.user,
+    };
+  }
+
+  $scope.$watch('selectedBookmark.cache',
     val => $scope.cacheConversion = getTime(val));
 
-  $scope.$watch("options.backgroundCacheInterval",
+  $scope.$watch('options.backgroundCacheInterval',
     val => $scope.backgroundCacheIntervalConversion = getTime(val * 60000));
 
-  $scope.$watch("selectedBookmark.query", val => {
-      $scope.testSuccessful = false;
-      $scope.selectedBookmark.hideSort = /order.+by/i.test(val)
+  $scope.$watch('selectedBookmark.query', val => {
+    $scope.testSuccessful = false;
+    $scope.selectedBookmark.hideSort = /order.+by/i.test(val);
   });
 
   // Prompt user to save before closing.
@@ -326,10 +340,28 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     if (!angular.equals($scope.data, getData()) && !promptUser++) {
       e.returnValue = true;
       ipcRenderer.send('save-changes');
-    } else {
+    }
+    else {
       return undefined;
     }
-  }
+  };
+
+  ipcRenderer.send('get-users');
+
+  ipcRenderer.on('set-users', (channel, users) => {
+    $timeout(()=> $scope.users = users.map(user => {
+      return {
+        name: user.name,
+        username: user.username,
+      };
+    }), 0);
+  });
+
+  ipcRenderer.send('get-issuetypes');
+
+  ipcRenderer.on('set-issuetypes', (channel, issuetypes) => {
+    $timeout(()=> $scope.issuetypes = issuetypes.map(issuetype => issuetype.name), 0);
+  });
 
   ipcRenderer.on('set-option', (channel, key, data) => {
     data = data.map(opt => {
@@ -337,7 +369,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       return opt;
     });
     $timeout(() => $scope.options[key] = data, 0);
-  })
+  });
 
   ipcRenderer.on('close-client', (channel, res) => {
     // user canceled the close.
@@ -345,7 +377,9 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       promptUser = 0;
       return;
     }
-    if (res === 0) $scope.save();
+    if (res === 0) {
+      $scope.save();
+    }
     ipcRenderer.send('close');
   });
 
@@ -353,7 +387,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $timeout(() => $scope.inProgress[type] = false, 0);
     new Notification(appName, {
       body: `Finished downloading icons: ${type}`,
-      icon: icon
+      icon: icon,
     });
   });
 
@@ -367,8 +401,9 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $timeout(() => {
       $scope.inProgress.testConfig = false;
       $scope.testSuccessful = result === true;
-      if (!$scope.testSuccessful)
+      if (!$scope.testSuccessful) {
         alert(`Bookmark Config Invalid:\n\n${result}`);
+      }
     }, 0);
   });
 }]);

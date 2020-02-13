@@ -7,6 +7,11 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * Run the build script `npm run build`
 
 ## Features
+* Quickly create new issues.
+  * **Project** and **Issue Type** fields are required and must be defined before submitted the summary.
+  * The summary can contain multiple periods (`.`) but the last character in the summary *must* be a period in order to submit the new issue. This is a precaution used to prevent premature submission of new issues.
+  * Default values for "Assignee," "Project," and "Issue Type" are configurable in the settings pane to make issue creation even easier.
+  * **Alfred 3** users can `cmd + enter` when submitting the issue to open the newly created issue in the browser.
 * Create "bookmarks" of custom JQL search queries that allow the user to quickly return a list of issues that meet the defined criteria.
   * By default, `alfred-jira` has two bookmarks for **issues assigned to you** and **issues that you are watching**.
 * Easily filter your bookmark results by *any* string in the issue (including `status`, `reporter`, etc).
@@ -63,7 +68,6 @@ For better performance, some information is persisted in `~/.alfred-jira`:
 
 * The list of users will persist for 7 days
 * The list of available transitions will persist for 45 seconds
-* The list of search results will persist for 45 seconds
 * Update status will persist for 24 hours (unless an update **is** available – in which case the workflow stops checking for updates).
 
 You also have the ability to enable *background cacheing* by selecting "**Refresh workflow cache in the background**" in the settings pane. Once you specify a time interval and save the settings, the app will create a LaunchAgent file (`$HOME/Library/LaunchAgents/com.alfred-jira.helper.plist`) that will keep your issues synced with the server so that you don't experience any lag when navigating your bookmark queries. The LaunchAgent only runs when it can connect to your Jira instance and is disabled when your credentials are invalid to prevent an accidental account lockout.
