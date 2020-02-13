@@ -9,7 +9,7 @@ const { ipcRenderer, remote } = require('electron');
 
 Object.prototype.Get = function(key) {
   return key.split('.')
-            .reduce(function (s,p) { 
+            .reduce(function (s,p) {
               return typeof s == 'undefined' || typeof s === null ? s : s[p];
             }, this);
 }
@@ -42,7 +42,7 @@ const icon = remote.getGlobal('icon');
 let app = angular.module('alfred-jira', []);
 
 app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorScroll', ($scope, $timeout, $element, $location, $anchorScroll) => {
-  
+
   // Cancel login when esc is pressed.
   $element.bind("keydown keypress", function (event) {
     if (event.key === 'Escape' || event.which === 27) {
@@ -77,7 +77,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     url: $scope.data.url
   };
 
-  $scope.$watch('loginData.url', 
+  $scope.$watch('loginData.url',
     () => $scope.loginData.url = removeProtocol($scope.loginData.url));
 
   $scope.login = () => {
@@ -162,7 +162,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
   }
 
   $scope.inProgress = {};
-  
+
   $scope.download = type => {
     ipcRenderer.send('download-imgs', type);
     $timeout(() => $scope.inProgress[type] = true, 0);
@@ -215,7 +215,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
       this.limitProjects = obj.limitProjects !== false;
       this.icon = obj.icon || null;
     }
-  }  
+  }
 
   $scope.getBookmarkIcon = index => {
     if (index === undefined) {
@@ -223,7 +223,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     }
     ipcRenderer.send('get-bookmark-icon', index);
   }
-  
+
   $scope.bookmarkIcon = fileName => {
     if (fileName && fs.existsSync(fileName)) {
       return fileName;
@@ -319,11 +319,11 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
 
   $scope.$watch("selectedBookmark.cache",
     val => $scope.cacheConversion = getTime(val));
-  
+
   $scope.$watch("options.backgroundCacheInterval",
     val => $scope.backgroundCacheIntervalConversion = getTime(val * 60000));
 
-  $scope.$watch("selectedBookmark.query", val => { 
+  $scope.$watch("selectedBookmark.query", val => {
       $scope.testSuccessful = false;
       $scope.selectedBookmark.hideSort = /order.+by/i.test(val)
   });
@@ -392,7 +392,7 @@ app.controller('ctrl', ['$scope', '$timeout', '$element', '$location', '$anchorS
     $timeout(() => {
       $scope.inProgress.testConfig = false;
       $scope.testSuccessful = result === true;
-      if (!$scope.testSuccessful) 
+      if (!$scope.testSuccessful)
         alert(`Bookmark Config Invalid:\n\n${result}`);
     }, 0);
   });
