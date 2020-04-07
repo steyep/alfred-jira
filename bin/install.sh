@@ -29,7 +29,6 @@ while true; do
   if [[ ! "$path" ]]; then
     echo "Enter the path to your \"Alfred.alfredpreferences\" file:"
     read directory
-    eval directory=$directory
   fi
 
   if [[ ! -d "$directory" ]]; then
@@ -38,7 +37,7 @@ while true; do
   fi
 
   if [[ "$directory" ]]; then
-    path="$(find $directory -path "*.alfredpreferences/workflows" 2>/dev/null)"
+    path="$(find "$directory" -path "*.alfredpreferences/workflows" 2>/dev/null)"
     if [[ -n "$path" ]]; then
       echo "Found preferences at: $(dirname "$path")"
       break 
