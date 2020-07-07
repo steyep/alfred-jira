@@ -19,7 +19,7 @@
   "dependencies": {
     "angular": "1.7.9",
     "axios": "0.19.2",
-    "electron": "1.8.8",
+    "electron": "7.2.4",
     "font-awesome": "4.7.0",
     "moment": "2.24.0",
     "node-persist": "1.0.1",
