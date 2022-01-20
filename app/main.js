@@ -25,20 +25,22 @@ global['app-name'] = appName;
 global['version'] = version;
 global['icon'] = icon;
 
-const shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
-  if (win) {
-    if (win.isMinimized()) {
-      win.restore();
-    }
-    win.focus();
-  }
-});
+const gotTheLock = app.requestSingleInstanceLock();
 
-if (shouldQuit) {
+if (!gotTheLock) {
   app.quit();
-  return;
-}
+} else {
+  app.on('second-instance', () => {
+    // Print out data received from the second instance.
 
+    // Someone tried to run a second instance, we should focus our window.
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
+    }
+  });
+
+}
 // Prevent launching the app from CLI when not logged-in.
 if (!jira.checkConfig() && !loginOnly) {
   console.log('You need to authenticate through the workflow');
@@ -53,6 +55,10 @@ app.on('ready', function(){
     minHeight: 440,
     show: false,
     titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+  }
   });
   win.loadURL(`file://${__dirname}/index.html`);
   // win.webContents.openDevTools();
