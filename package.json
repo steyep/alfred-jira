@@ -21,7 +21,7 @@
     "axios": "0.19.2",
     "electron": "1.8.8",
     "font-awesome": "4.7.0",
-    "moment": "2.24.0",
+    "moment": "2.29.2",
     "node-persist": "1.0.1",
     "xmlbuilder": "8.2.2"
   },
