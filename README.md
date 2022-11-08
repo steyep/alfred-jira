@@ -6,6 +6,14 @@ This is a workflow for Alfred 2 (or Alfred 3) that can be used to interact with 
 * Clone/fork this repo
 * Run the build script `npm run build`
 
+## JIRA Login
+
+After installation, you can login to your JIRA instance by opening you alfred prompt, entering "jira", and select "Alfred JIRA Workflow > Login". 
+
+From here you can enter your JIRA URL, username, and password. 
+
+If you're logging into JIRA through SSO, you can create an API Token, which you can use as your password. 
+
 ## Features
 * Quickly create new issues.
   * **Project** and **Issue Type** fields are required and must be defined before submitted the summary.
